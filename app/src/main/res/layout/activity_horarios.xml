@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="appbatros.solutions.com.mx.appbatros.ActivityHorarios"
+    android:orientation="vertical">
+
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+       android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        style="@style/cabeceraOrigenDestino">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Hermosillo a Cananea"
+            style="@style/cabeceraOrigenDestino"
+            android:textStyle = "bold"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+             <TextView
+                 android:id="@+id/textView_diaHorarios"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="26">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" de ">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textView_mesHorarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" agosto">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textView_anoHorarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:text="2017">
+            </TextView>
+
+
+
+            style="@style/cabeceraOrigenDestino"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/recicladorCamionFila1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:scrollbars="vertical"
+            />
+    </ScrollView>
+</LinearLayout>

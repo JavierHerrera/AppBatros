@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/fondo_road"
+    tools:context="appbatros.solutions.com.mx.appbatros.ActivityMain"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:elevation="1dp"
+        style="@style/layoutMain"
+       >
+
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Origen"
+                android:layout_weight="1"
+                style="@style/textoNegroFondoClaro"/>
+
+            <Spinner
+                android:id="@+id/spinnerOrigenMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/array_name"/>
+        </LinearLayout>
+
+        <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/linea"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="25dp"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Destino"
+                    android:layout_weight="1"
+                    style="@style/textoNegroFondoClaro"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinnerDestinoMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/array_name"/>
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        style="@style/layoutMain"
+        android:elevation="1dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Salida"
+                style="@style/textoNegroFondoClaro"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/in_date"
+                android:hint="29/08/2016"
+                android:focusable="false"/>
+
+            <Button
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:id="@+id/btn_date"
+                android:background="@drawable/fecha"
+                android:layout_margin="10dp"
+               />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:onClick="seleccionarPasajeros"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        style="@style/layoutMain"
+        android:layout_marginBottom="0dp"
+        android:gravity="center_vertical"
+        android:elevation="1dp">
+
+        <TextView
+            android:id="@+id/text_Pasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Pasajeros"
+            style="@style/textoNegroFondoClaro"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            >
+
+            <LinearLayout
+                android:id="@+id/layout_pasajero1Main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/icon_pasajero1Main"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_adulto"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_pasajero2Main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/icon_pasajero2Main"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_estudiante"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_pasajero3Main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/icon_pasajero3Main"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_mayor"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_pasajero4Main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/icon_pasajero4Main"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_ninos"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+       >
+
+
+
+        <Button
+            android:onClick="goHorariosActivity"
+            android:id="@+id/buttonBuscarHorarioMain"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="BUSCAR"
+            android:textSize="22dp"
+            style="@style/cabeceraOrigenDestino2"
+            android:layout_alignParentBottom="true"
+
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

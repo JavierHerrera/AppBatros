@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <LinearLayout
+        style="@style/linearLayPasajeros"
+        android:gravity="start"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Ingresa nombre y tipo de pasajero"
+            android:textSize="21sp"
+            android:textColor="#000000"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/linearLayPasajeros"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="20dp">
+
+            <EditText
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="nombre completo"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:id="@+id/layout_pasajero1Camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/icon_pasajero1Camion"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/icon_adulto"/>
+
+            <TextView
+                android:id="@+id/textView_pasajero1Camion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adulto"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_pasajero2Camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:duplicateParentState="true"
+                android:id="@+id/icon_pasajero2Camion"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/icon_estudiante"/>
+
+            <TextView
+                android:duplicateParentState="true"
+                android:id="@+id/textView_pasajero2Camion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estudiante"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_pasajero3Camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:duplicateParentState="true"
+                android:id="@+id/icon_pasajero3Camion"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/icon_mayor"/>
+
+            <TextView
+                android:duplicateParentState="true"
+                android:id="@+id/textView_pasajero3Camion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Insen"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_pasajero4Camion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:duplicateParentState="true"
+                android:id="@+id/icon_pasajero4Camion"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/icon_ninos"/>
+
+            <TextView
+                android:duplicateParentState="true"
+                android:id="@+id/textView_pasajero4Camion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Niños"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/materialLinearMensajeBotonCanelarAceptar"
+        >
+
+        <Button
+            android:id="@+id/botonCancelarDialogoAsientos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"/>
+
+        <Button
+            android:id="@+id/botonAceptarDialogoAsientos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Aceptar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

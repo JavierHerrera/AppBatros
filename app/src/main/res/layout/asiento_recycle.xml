@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imagen_asientos"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@drawable/asiento_ocupado"
+            android:layout_marginBottom="9dp"/>
+
+        <TextView
+            android:id="@+id/numero_asiento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="20dp"
+            android:textColor="@color/grisClaro"
+            android:layout_centerInParent="true"/>
+
+</RelativeLayout>

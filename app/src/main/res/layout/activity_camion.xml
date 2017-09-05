@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        style="@style/cabeceraOrigenDestino">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Hermosillo a Cananea"
+            style="@style/cabeceraOrigenDestino"
+            android:textStyle = "bold"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="26 de agosto de 2017"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            style="@style/cabeceraOrigenDestino"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_Asiento1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView_IconAsiento1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_adulto"/>
+
+            <TextView
+                android:id="@+id/imageview_NombreAsiento1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Enrique Peñanieto"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="No. de asiento "
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/textView_NumeroAsiento1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="18"
+                android:layout_gravity="center_vertical"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/icon_cancel"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_Asiento2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView_IconAsiento2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_adulto"/>
+
+            <TextView
+                android:id="@+id/imageview_NombreAsiento2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Enrique Peñanieto"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="No. de asiento "
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/textView_NumeroAsiento2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="18"
+                    android:layout_gravity="center_vertical"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/icon_cancel"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_Asiento3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView_IconAsiento3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_adulto"/>
+
+            <TextView
+                android:id="@+id/imageview_NombreAsiento3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Enrique Peñanieto"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="No. de asiento "
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/textView_NumeroAsiento3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="18"
+                    android:layout_gravity="center_vertical"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/icon_cancel"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_Asiento4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView_IconAsiento4"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_adulto"/>
+
+            <TextView
+                android:id="@+id/imageview_NombreAsiento4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Enrique Peñanieto"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="No. de asiento "
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/textView_NumeroAsiento4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="18"
+                    android:layout_gravity="center_vertical"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/icon_cancel"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selecciona el asiendo "
+            android:textSize="20sp"
+            android:textColor="#000"
+            />
+
+    </LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:fillViewport="false"
+        >
+
+            <android.support.percent.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/camion"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutCocherEscaleras"
+                    android:layout_height="wrap_content"
+                    app:layout_widthPercent="65%"
+                    android:layout_marginTop="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_chofer"/>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_escaleras"
+                        android:layout_alignParentEnd="true"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/contentedorAsientos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_widthPercent="75%"
+                    android:layout_below="@id/relativeLayoutCocherEscaleras"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.RecyclerView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/recicladorAsientos1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:scrollbars="vertical"/>
+
+                    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/recicladorAsientos2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:padding="3dp"
+                        android:scrollbars="vertical" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutBanos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/contentedorAsientos"
+                    android:layout_centerHorizontal="true"
+                    app:layout_widthPercent="55%"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/icon_bano" />
+
+                </RelativeLayout>
+
+            </android.support.percent.PercentRelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="0dp"
+   >
+
+    <LinearLayout
+      style="@style/linearLayPasajeros"
+        android:paddingTop="16dp">
+
+        <TextView
+            style="@style/textoPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:text="Adultos" />
+
+        <TextView
+            android:id="@+id/textViewnumeroAdultos"
+            style="@style/numeroPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/numero_adultos" />
+
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
+
+            <Button
+                android:id="@+id/botonAdultosMenos"
+                style="@style/botonesMasMenosMain"
+                android:background="@drawable/boton_menos_main"
+                />
+
+            <Button
+                android:id="@+id/botonAdultosMas"
+                style="@style/botonesMasMenosMain"
+                android:layout_marginStart="-2dp"
+                android:layout_toEndOf="@+id/botonAdultosMenos"
+                android:background="@drawable/boton_mas_main" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/linea"/>
+
+    <LinearLayout
+        style="@style/linearLayPasajeros">
+
+        <TextView
+            style="@style/textoPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:text="Niños" />
+
+
+        <TextView
+            android:id="@+id/textViewnumeroNinos"
+            style="@style/numeroPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="0" />
+
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
+
+            <Button
+                android:id="@+id/botonNinosMenos"
+                style="@style/botonesMasMenosMain"
+                android:background="@drawable/boton_menos_main"/>
+
+            <Button
+                android:id="@+id/botonNinosMas"
+                style="@style/botonesMasMenosMain"
+                android:layout_marginLeft="-2dp"
+                android:layout_marginStart="-2dp"
+                android:layout_toEndOf="@+id/botonNinosMenos"
+                android:background="@drawable/boton_mas_main"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/linea"/>
+
+    <LinearLayout
+        style="@style/linearLayPasajeros">
+
+        <TextView
+            style="@style/textoPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:text="Estudiantes" />
+
+
+        <TextView
+            android:id="@+id/textViewnumeroEstudiantes"
+            style="@style/numeroPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="0" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/botonEstudiantesMenos"
+                style="@style/botonesMasMenosMain"
+                android:background="@drawable/boton_menos_main" />
+
+            <Button
+                android:id="@+id/botonEstudiantesMas"
+                style="@style/botonesMasMenosMain"
+                android:layout_marginStart="-2dp"
+                android:layout_toEndOf="@+id/botonEstudiantesMenos"
+                android:background="@drawable/boton_mas_main"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/linea"/>
+
+    <LinearLayout
+        style="@style/linearLayPasajeros">
+
+        <TextView
+            style="@style/textoPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:text="Insen" />
+
+
+        <TextView
+            android:id="@+id/textViewnumeroInsen"
+            style="@style/numeroPasajeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="0" />
+
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
+
+            <Button
+                android:id="@+id/botonInsenMenos"
+                style="@style/botonesMasMenosMain"
+                android:background="@drawable/boton_menos_main"/>
+
+            <Button
+                android:id="@+id/botonInsenMas"
+                style="@style/botonesMasMenosMain"
+                android:layout_marginStart="-2dp"
+                android:layout_toEndOf="@+id/botonInsenMenos"
+                android:background="@drawable/boton_mas_main"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/linea"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:gravity="end"
+        >
+
+        <Button
+            android:id="@+id/botonCancelarDialogoPasajeros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"/>
+
+        <Button
+            android:id="@+id/botonAceptarDialogoPasajeros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aceptar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"
+            android:gravity="end"
+          />
+
+
+    </LinearLayout>
+
+</LinearLayout>

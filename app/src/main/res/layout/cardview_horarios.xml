@@ -1,0 +1,95 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="0dp"
+    card_view:cardUseCompatPadding="true"
+    android:id="@+id/cardviewMain">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/relativeCardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textviewHoraSalidaCardviewHorarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01:30"
+                android:textSize="20dp"
+                android:textStyle = "bold"
+                style="@style/colorPrincipal"/>
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/drop_down_arrow"/>
+
+            <TextView
+                android:id="@+id/textviewHoraLlegadaCardviewHorarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:30"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textviewTipoCamionCardviewMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal"
+                android:textSize="15dp"
+                android:textStyle = "bold"
+                style="@style/colorPrincipal"/>
+
+            <TextView
+                android:id="@+id/textviewAsientosDisponiblesCardviewMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Asientos Disponibles 12"
+                android:textSize="10dp"
+               />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="20dp"
+            android:text="$ 234"
+            android:textStyle = "bold"
+            android:layout_marginRight="5dp"
+            style="@style/colorPrincipal"/>
+
+    </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/relativeCardview"/>
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
