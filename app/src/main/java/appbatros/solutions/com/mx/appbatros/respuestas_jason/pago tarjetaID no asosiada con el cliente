@@ -1,0 +1,18 @@
+{
+  "status": 0,
+  "error": "Conekta",
+  "descripcion": {
+    "http_code": 422,
+    "details": [
+      {
+        "debug_message": "the card is not associated with the customer.",
+        "message": "La tarjeta no esta asociada al cliente.",
+        "param": "payment_method.payment_source_id",
+        "code": "conekta.errors.parameter_validation.payment_method.payment_source_id.nonexistent_card"
+      }
+    ],
+    "object": "error",
+    "type": "parameter_validation_error",
+    "log_id": "59c35eccb795b0446a0ad6eb"
+  }
+}

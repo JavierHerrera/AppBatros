@@ -44,7 +44,7 @@ public class AdapterAsiento extends RecyclerView.Adapter<AdapterAsiento.AsientoV
     @Override
     public AsientoViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.asiento_recycle, viewGroup, false);
+                .inflate(R.layout.recycleview_asiento, viewGroup, false);
         return new AsientoViewHolder(v);
     }
 
@@ -59,7 +59,7 @@ public class AdapterAsiento extends RecyclerView.Adapter<AdapterAsiento.AsientoV
         viewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAdapterCallback.foo(asientoItem,position);
+                mAdapterCallback.adapterCamion(asientoItem,position);
             }
         });
     }

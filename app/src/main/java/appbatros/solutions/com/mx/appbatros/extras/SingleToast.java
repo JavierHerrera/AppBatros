@@ -1,4 +1,4 @@
-package appbatros.solutions.com.mx.appbatros;
+package appbatros.solutions.com.mx.appbatros.extras;
 
 import android.content.Context;
 import android.widget.Toast;

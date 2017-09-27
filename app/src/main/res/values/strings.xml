@@ -10,7 +10,7 @@
     <string name="birthday">06/02/1986</string>
 
 
-    <string-array name="array_name">
+    <string-array name="array_ciudades">
         <item>Hermosillo</item>
         <item>Obregon</item>
         <item>Nogales</item>
@@ -27,5 +27,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="numero_adultos">0</string>
+    <string name="conekta_credential">key_HymRgwGBwcxqm5rUxqyVetQ</string>
+    <string name="conekta_api">2.0.0</string>
+
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

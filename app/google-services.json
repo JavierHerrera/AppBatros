@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "740181764612",
+    "firebase_url": "https://albatros-1b3ac.firebaseio.com",
+    "project_id": "albatros-1b3ac",
+    "storage_bucket": "albatros-1b3ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740181764612:android:3d8dd1996d1758c0",
+        "android_client_info": {
+          "package_name": "appbatros.solutions.com.mx.appbatros"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740181764612-uc8dsiu5ejjp1gkbkf4716o7fss1dp8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "appbatros.solutions.com.mx.appbatros",
+            "certificate_hash": "60f66ea8d0bac07c5c246fd3253842ad4e74ca8e"
+          }
+        },
+        {
+          "client_id": "740181764612-q0beh6ouk88luklolid8uki39fp41mjm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-wRotxBgbiTTiiasHIlcbev5Z_aCeR1c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740181764612-q0beh6ouk88luklolid8uki39fp41mjm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

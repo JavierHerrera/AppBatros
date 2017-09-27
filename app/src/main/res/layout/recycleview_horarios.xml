@@ -30,17 +30,6 @@
                 android:textStyle = "bold"
                 style="@style/colorPrincipal"/>
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:src="@drawable/drop_down_arrow"/>
-
-            <TextView
-                android:id="@+id/textviewHoraLlegadaCardviewHorarios"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10:30"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -90,6 +79,5 @@
             android:background="@android:color/darker_gray"
             android:layout_below="@+id/relativeCardview"/>
     </RelativeLayout>
-
 
 </android.support.v7.widget.CardView>

@@ -6,7 +6,7 @@
     android:padding="0dp">
 
     <LinearLayout
-        style="@style/linearLayPasajeros"
+        style="@style/linearLayNormal"
         android:gravity="start"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
@@ -14,26 +14,29 @@
         android:paddingTop="16dp">
 
         <TextView
+            android:id="@+id/textView_nombrePasajero_dialogoAgregar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Ingresa nombre y tipo de pasajero"
+            android:text="Ingresa el nombre del "
             android:textSize="21sp"
             android:textColor="#000000"/>
 
     </LinearLayout>
 
     <LinearLayout
-        style="@style/linearLayPasajeros"
+        style="@style/linearLayNormal"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginTop="20dp">
 
             <EditText
+                android:id="@+id/editText_NombrePasajeroDialogo"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="nombre completo"/>
+                android:hint="nombre completo"
+               />
 
     </LinearLayout>
 

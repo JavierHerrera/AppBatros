@@ -4,9 +4,17 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="violeta">#FF4081</color>
+    <color name="blanco">#ffffff</color>
     <color name="grisClaro">#ecebeb</color>
     <color name="grisClaroTransparencia">#b1ffffff</color>
     <color name="grisNormal">#e0e0e0</color>
     <color name="grisOscuro">#aeaeae</color>
+    <color name="grisMuyOscuro">#636363</color>
+    <color name="grisOscuroTransparencia">#c8aeaeae</color>
     <color name="primarioTranparencia">#c3147bca</color>
+    <color name="principal">#147BCA</color>
+    <color name="negro">#000000</color>
+    <color name="negroTransparencia">#c5000000</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

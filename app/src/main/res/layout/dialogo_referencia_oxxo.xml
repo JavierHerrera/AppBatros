@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <LinearLayout
+        style="@style/linearLayNormal"
+        android:gravity="start"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:id="@+id/textView_nombrePasajero_dialogoAgregar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Referencia Oxxo"
+            android:textSize="21sp"
+            android:textColor="#000000"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contenedor_agregarTarjetas_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+
+        />
+
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoud_dialogTarjeta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_referenciaOxxo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="$$#% 5453 34543"
+            android:textColor="@color/cardview_dark_background"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            style="@style/layoutMain"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="La referencia tambien fue enviada a su correo"
+            style="@style/layoutMain"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/materialLinearMensajeBotonCanelarAceptar"
+        >
+
+        <Button
+            android:id="@+id/botonCancelarDialogoPasajeros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"/>
+
+        <Button
+            android:id="@+id/botonAceptarDialogoOxxo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Aceptar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

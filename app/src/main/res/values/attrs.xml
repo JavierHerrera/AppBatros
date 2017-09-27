@@ -1,0 +1,32 @@
+<resources>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+    {"corridas":[{"corrida":"315","hora":"0200","express":"F","asientos":[]},
+    {"corrida":"316","hora":"0400","express":"F","asientos":[]},
+    {"corrida":"301","hora":"0715","express":"V","asientos":[4,27]},
+    {"corrida":"201","hora":"0900","express":"0","asientos":[]},
+    {"corrida":"104","hora":"1100","express":"V","asientos":[18,18,21,22,16,20]},
+    {"corrida":"304","hora":"1230","express":"V","asientos":[]},
+    {"corrida":"303","hora":"1330","express":"V","asientos":[5,6,7]},
+    {"corrida":"305","hora":"1430","express":"V","asientos":[]},
+    {"corrida":"306","hora":"1600","express":"V","asientos":[13]},
+    {"corrida":"121","hora":"1730","express":"F","asientos":[16]},
+    {"corrida":"309","hora":"1930","express":"V","asientos":[11,12]}],
+
+    "tarifas":[
+        {"tarifa":"HMO-OBR",
+        "normal":210,
+        "estudiante":158,
+        "insen":126,
+        "menores":126},
+    {"tarifa":"HMO*OBR","normal":220,"estudiante":165,"insen":132,"menores":132}]}
+
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_texto_dialogoInformativo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="La referencia tambien fue enviada a su correo"
+            android:textSize="20sp"
+            android:textColor="@color/negro"
+            style="@style/layoutMain"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/materialLinearMensajeBotonCanelarAceptar">
+
+        <Button
+            android:id="@+id/btn_cancelar_dialogoInformativo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"/>
+
+        <Button
+            android:id="@+id/btn_aceptar_dialogoInformativo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Aceptar"
+            android:background="#00fffefe"
+            android:textColor="#147BCA"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

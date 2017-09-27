@@ -7,7 +7,7 @@
    >
 
     <LinearLayout
-      style="@style/linearLayPasajeros"
+      style="@style/linearLayNormal"
         android:paddingTop="16dp">
 
         <TextView
@@ -55,7 +55,7 @@
         android:src="@drawable/linea"/>
 
     <LinearLayout
-        style="@style/linearLayPasajeros">
+        style="@style/linearLayNormal">
 
         <TextView
             style="@style/textoPasajeros"
@@ -101,7 +101,7 @@
         android:src="@drawable/linea"/>
 
     <LinearLayout
-        style="@style/linearLayPasajeros">
+        style="@style/linearLayNormal">
 
         <TextView
             style="@style/textoPasajeros"
@@ -146,7 +146,7 @@
         android:src="@drawable/linea"/>
 
     <LinearLayout
-        style="@style/linearLayPasajeros">
+        style="@style/linearLayNormal">
 
         <TextView
             style="@style/textoPasajeros"

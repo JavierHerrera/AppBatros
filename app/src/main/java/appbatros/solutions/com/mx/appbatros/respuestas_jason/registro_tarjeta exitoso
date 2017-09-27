@@ -1,0 +1,10 @@
+{
+  "status": 1,
+  "respuesta": {
+    "id": "ord_2hFUYfTKyVurqEug4",
+    "paymethod": "OxxoPay",
+    "reference": "93345678901234",
+    "importe": "235MXN",
+    "description": "[3799614]"
+  }
+}

@@ -39,11 +39,11 @@
     </style>
 
     <style name="numeroPasajeros">
-        <item name="android:textColor">#147BCA</item>
+        <item name="android:textColor">@color/principal</item>
         <item name="android:textSize">25dp</item>
     </style>
 
-    <style name="linearLayPasajeros">
+    <style name="linearLayNormal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
@@ -66,14 +66,19 @@
         <item name="android:background">#60aafe</item>
     </style>
 
-    <style name="cabeceraOrigenDestino2">
+    <style name="botonActivo">
         <item name="android:textColor">#b3000000</item>
-        <item name="android:background">@color/primarioTranparencia</item>
+        <item name="android:background">@color/principal</item>
+    </style>
+
+    <style name="botonInctivo">
+        <item name="android:textColor">#b3000000</item>
+        <item name="android:background">@color/grisOscuroTransparencia</item>
     </style>
 
 
     <!--- Elementos de layout Camion -->
-     <style name="asientoOcupado">
+    <style name="asientoOcupado">
         <item name="android:layout_width">55dp</item>
         <item name="android:layout_height">55dp</item>
         <item name="android:layout_marginBottom">9dp</item>
@@ -92,6 +97,18 @@
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:gravity">end</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

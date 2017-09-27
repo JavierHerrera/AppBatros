@@ -1,41 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/cabecera_camion"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:paddingRight="5dp"
         android:paddingLeft="5dp"
         style="@style/cabeceraOrigenDestino">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:text="Hermosillo a Cananea"
-            style="@style/cabeceraOrigenDestino"
-            android:textStyle = "bold"
-            />
+            android:gravity="center_vertical"
+            >
 
-        <TextView
+            <TextView
+                android:id="@+id/textVie_origen_camion"
+                style="@style/cabeceraOrigenDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hermosillo"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/cabeceraOrigenDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" a "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView_destino_camion"
+                style="@style/cabeceraOrigenDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cananea"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="26 de agosto de 2017"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            style="@style/cabeceraOrigenDestino"/>
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/textView_horaCamion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3:00 PM"
+                android:layout_marginEnd="8dp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textView_diaCamion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" / ">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textView_mesCamion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="agosto">
+            </TextView>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/resumen_camion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/cabecera_camion">
 
         <LinearLayout
             android:id="@+id/layout_Asiento1"
@@ -44,7 +98,8 @@
             android:gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_marginTop="8dp">
 
             <ImageView
                 android:id="@+id/imageView_IconAsiento1"
@@ -57,7 +112,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="Enrique Peñanieto"/>
+                android:text="Enrique Peñanieto"
+                android:textAllCaps="true"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -76,17 +132,11 @@
 
             <TextView
                 android:id="@+id/textView_NumeroAsiento1"
-                android:layout_width="wrap_content"
+                android:layout_width="22dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="18"
                 android:layout_gravity="center_vertical"/>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/icon_cancel"/>
 
             </LinearLayout>
 
@@ -98,7 +148,8 @@
             android:gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_marginTop="8dp">
 
             <ImageView
                 android:id="@+id/imageView_IconAsiento2"
@@ -111,6 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:textAllCaps="true"
                 android:text="Enrique Peñanieto"/>
 
             <LinearLayout
@@ -130,17 +182,11 @@
 
                 <TextView
                     android:id="@+id/textView_NumeroAsiento2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="22dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="18"
                     android:layout_gravity="center_vertical"/>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/icon_cancel"/>
 
             </LinearLayout>
 
@@ -152,7 +198,8 @@
             android:gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_marginTop="8dp">
 
             <ImageView
                 android:id="@+id/imageView_IconAsiento3"
@@ -165,6 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:textAllCaps="true"
                 android:text="Enrique Peñanieto"/>
 
             <LinearLayout
@@ -184,17 +232,11 @@
 
                 <TextView
                     android:id="@+id/textView_NumeroAsiento3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="22dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="18"
                     android:layout_gravity="center_vertical"/>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/icon_cancel"/>
 
             </LinearLayout>
 
@@ -206,7 +248,8 @@
             android:gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_marginTop="8dp">
 
             <ImageView
                 android:id="@+id/imageView_IconAsiento4"
@@ -219,6 +262,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:textAllCaps="true"
                 android:text="Enrique Peñanieto"/>
 
             <LinearLayout
@@ -238,17 +282,12 @@
 
                 <TextView
                     android:id="@+id/textView_NumeroAsiento4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="22dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="18"
                     android:layout_gravity="center_vertical"/>
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/icon_cancel"/>
 
             </LinearLayout>
 
@@ -256,34 +295,20 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView_camion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Selecciona el asiendo "
-            android:textSize="20sp"
-            android:textColor="#000"
-            />
-
-    </LinearLayout>
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="10dp"
         android:fillViewport="false"
+        android:layout_below="@+id/resumen_camion"
         >
 
             <android.support.percent.PercentRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/camion"
+                android:focusableInTouchMode="true"
                 >
 
                 <RelativeLayout
@@ -358,4 +383,16 @@
 
     </ScrollView>
 
-</LinearLayout>
+    <Button
+        android:onClick="cambiarActivityResumen"
+        android:id="@+id/button_buscarActivo_main"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="CONTINUAR"
+        android:textSize="22dp"
+        style="@style/botonActivo"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

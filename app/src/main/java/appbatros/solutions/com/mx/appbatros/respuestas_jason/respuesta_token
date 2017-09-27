@@ -1,0 +1,33 @@
+{
+  "default": "src_2hFKbdFqGBDpWwB2B",
+  "tarjetas": [
+    {
+      "id": "src_2hFLkQBzk2ExhShPo",
+      "object": "payment_source",
+      "type": "card",
+      "created_at": 1505984780,
+      "last4": "4242",
+      "bin": "424242",
+      "exp_month": "11",
+      "exp_year": "17",
+      "brand": "VISA",
+      "name": "Josue Camara",
+      "parent_id": "cus_2hFKUs2fz3HuNF6aU",
+      "default": false
+    },
+    {
+      "id": "src_2hFKbdFqGBDpWwB2B",
+      "object": "payment_source",
+      "type": "card",
+      "created_at": 1505979534,
+      "last4": "4242",
+      "bin": "424242",
+      "exp_month": "11",
+      "exp_year": "17",
+      "brand": "VISA",
+      "name": "Josue Camara",
+      "parent_id": "cus_2hFKUs2fz3HuNF6aU",
+      "default": true
+    }
+  ]
+}

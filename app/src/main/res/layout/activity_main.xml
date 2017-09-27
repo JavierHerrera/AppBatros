@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/fondo_road"
+    android:scaleType="fitXY"
     tools:context="appbatros.solutions.com.mx.appbatros.ActivityMain"
     >
 
@@ -34,8 +35,7 @@
                 android:id="@+id/spinnerOrigenMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawSelectorOnTop="true"
-                android:entries="@array/array_name"/>
+                android:entries="@array/array_ciudades"/>
         </LinearLayout>
 
         <ImageView
@@ -62,8 +62,7 @@
                     android:id="@+id/spinnerDestinoMain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawSelectorOnTop="true"
-                    android:entries="@array/array_name"/>
+                    android:entries="@array/array_ciudades"/>
 
             </LinearLayout>
 
@@ -87,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/in_date"
-                android:hint="29/08/2016"
+                android:hint="Eliga una fecha"
                 android:focusable="false"/>
 
             <Button
@@ -195,7 +194,6 @@
 
     </LinearLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -203,18 +201,27 @@
         android:gravity="bottom"
        >
 
-
-
         <Button
-            android:onClick="goHorariosActivity"
-            android:id="@+id/buttonBuscarHorarioMain"
+            android:onClick="mostrarCamposIncompletos"
+            android:id="@+id/button_buscarInactivo_main"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="BUSCAR"
             android:textSize="22dp"
-            style="@style/cabeceraOrigenDestino2"
+            style="@style/botonInctivo"
             android:layout_alignParentBottom="true"
-
+            android:visibility="gone"
+            />
+        <Button
+            android:onClick="goHorariosActivity"
+            android:id="@+id/button_buscarActivo_main"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="BUSCAR"
+            android:textSize="22dp"
+            style="@style/botonActivo"
+            android:layout_alignParentBottom="true"
+            android:visibility="visible"
             />
 
     </RelativeLayout>
