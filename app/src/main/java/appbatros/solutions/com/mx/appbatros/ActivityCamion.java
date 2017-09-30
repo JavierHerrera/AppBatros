@@ -1,6 +1,8 @@
 package appbatros.solutions.com.mx.appbatros;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -252,6 +256,8 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
                     }
                 });
 
+                mostrarTeclado(editText_nombre);
+
                 aceptar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -315,6 +321,12 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
 
                     dialog_eliminar.dismiss();
+                }
+            });
+
+            dialog_eliminar.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {ocultarTeclado();
                 }
             });
         }
@@ -528,4 +540,28 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
         startActivity(intent);
     }
 
+
+
+    private void mostrarTeclado(EditText editText) {
+        try {
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .toggleSoftInput(InputMethodManager.SHOW_FORCED,
+                            InputMethodManager.HIDE_IMPLICIT_ONLY);
+            if (editText != null) editText.requestFocus();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void ocultarTeclado() {
+        try {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            if ((getCurrentFocus() != null) && (getCurrentFocus().getWindowToken() != null)) {
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

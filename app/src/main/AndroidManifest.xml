@@ -34,9 +34,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ActivityHorarios" />
-        <activity android:name=".ActivityCamion" />
+        <activity android:name=".ActivityCamion"/>
         <activity android:name=".ActivityResumen" />
-        <activity android:name=".ActivityMetodoPago" />
+        <activity android:name=".ActivityMetodoPago"
+            android:launchMode="singleInstance"/>
         <activity android:name=".ActivityAgregarTarjeta" />
         <activity android:name=".ActivityMain" />
         <activity android:name=".ActivityHistorial" />

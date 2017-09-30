@@ -201,9 +201,9 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
     }
 
     public void goHome() {
-
         Intent intent = new Intent(this, ActivityMain.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
