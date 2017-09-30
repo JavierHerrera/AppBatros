@@ -1,0 +1,18 @@
+{
+  "status": 0,
+  "error": "Conekta",
+  "descripcion": {
+    "http_code": 422,
+    "details": [
+      {
+        "debug_message": "Invalid format for \"customer_info attribute name\"",
+        "message": "Formato inválido para name\"",
+        "param": "customer_info.name",
+        "code": "conekta.errors.parameter_validation.customer_info.name.invalid"
+      }
+    ],
+    "object": "error",
+    "type": "parameter_validation_error",
+    "log_id": "59cdcd94ffecf90ab4d05af3"
+  }
+}

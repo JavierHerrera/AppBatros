@@ -255,15 +255,23 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
                 aceptar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Cambiar color a de asiento(azul)
-                        asiento.setImagen(R.drawable.asiento_seleccionado);
-                        actualizarVista(asiento, position);
-                        asiento.setStatus("seleccionado");
-                        cargarDatosPasajeroEnResumen(pasajero_seleccionado, asiento.getNumeroAsiento());
-                        asientosElejidos = asientosElejidos + 1;
-                        aparecerBotonContinuar();
 
-                        dialog_agregar.dismiss();
+                        if (editText_nombre.length() > 0) {
+
+                            //Cambiar color a de asiento(azul)
+                            asiento.setImagen(R.drawable.asiento_seleccionado);
+                            actualizarVista(asiento, position);
+                            asiento.setStatus("seleccionado");
+                            cargarDatosPasajeroEnResumen(pasajero_seleccionado, asiento.getNumeroAsiento());
+                            asientosElejidos = asientosElejidos + 1;
+                            aparecerBotonContinuar();
+
+                            dialog_agregar.dismiss();
+
+                        }else{
+                            SingleToast.show(ActivityCamion.this,"Ingrece el nombre del pasajero",Toast.LENGTH_SHORT);
+
+                        }
 
                     }
                 });
@@ -417,9 +425,22 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
         for (int i = 0; i < 42; i++) {
 
             if(!ocuparAsiento(i+1)){
-                lado(i).add(new Asiento(R.drawable.asiento_disponible, i+1,"disponible"));
+
+                //Agregar tele
+                if (i+1 == 1 || i+1 ==4  || i+1 == 13 || i+1 == 28 || i+1 == 37) {
+                    lado(i).add(new Asiento(R.drawable.asiento_disponible, i + 1, "disponible", R.drawable.tv));
+                }else{
+                    lado(i).add(new Asiento(R.drawable.asiento_disponible, i + 1, "disponible", R.drawable.no_tv));
+                }
+
             }else{
-                lado(i).add(new Asiento(R.drawable.asiento_ocupado, i+1,"ocupado"));
+
+                //Agregar tele
+                if (i+1 == 1 || i+1 ==4  || i+1 == 13 || i+1 == 28 || i+1 == 37) {
+                    lado(i).add(new Asiento(R.drawable.asiento_ocupado, i + 1, "ocupado", R.drawable.tv));
+                }else{
+                    lado(i).add(new Asiento(R.drawable.asiento_ocupado, i + 1, "ocupado", R.drawable.no_tv));
+                }
             }
         }
     }

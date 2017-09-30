@@ -9,40 +9,51 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import appbatros.solutions.com.mx.appbatros.DB.HistorialDB;
 import appbatros.solutions.com.mx.appbatros.extras.FormatoHorasFechas;
+import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
 import appbatros.solutions.com.mx.appbatros.objetos.Pasajero;
 import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
 
-public class ActivityResumen extends AppCompatActivity {
+public class ActivityResumen extends AppCompatActivity  {
     final String TAG = "ResumenLog";
 
     // DB
     HistorialDB myDB;
     Cursor cursor;
     private RequestQueue requestQueue;
+
+    CheckBox aceptarCompra,aceptarTerminos;
+
+    ArrayList<String> asientosOcupados = new ArrayList<>();
+    String elAsientoOcupado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +124,6 @@ public class ActivityResumen extends AppCompatActivity {
         cargarDatosPasajero(Viaje.pasajeroArrayList.get(3), layoutPasajero3, nombrePasajero3,tipoPasajero3,asientoPasajero3,importePasajero3);
         cargarDatosPasajero(Viaje.pasajeroArrayList.get(4), layoutPasajero4, nombrePasajero4,tipoPasajero4,asientoPasajero4,importePasajero4);
 
-
         //INICIAR BD
         myDB = new HistorialDB(this);
 
@@ -121,6 +131,33 @@ public class ActivityResumen extends AppCompatActivity {
         FormatoHorasFechas formato = new FormatoHorasFechas();
 
         requestQueue = Volley.newRequestQueue(this);
+
+        //Checkbox de terminos y pago. Valida que los os esten activos para habiltiar el boton de Confirmar
+        aceptarCompra = (CheckBox) findViewById(R.id.checkb_aceptarcompra_resumen);
+        aceptarTerminos = (CheckBox) findViewById(R.id.checkb_aceptoterminos_resumen);
+
+        aceptarCompra.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                validarDatosActivarBoton();
+
+            }
+        });
+
+        aceptarTerminos.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                validarDatosActivarBoton();
+
+            }
+        });
+
+        validarDatosActivarBoton();
+
+        asientosOcupados.add("0");
+
     }
 
     private void cargarActionBar() {
@@ -181,65 +218,117 @@ public class ActivityResumen extends AppCompatActivity {
 
     }
 
+    public void cambiarActivityMetodoPago(View view) {
 
+        //Se verifica si hay pasajeros con descuento y se muestra el dialogo para apartar los voletos
+
+        if (verificarDescuento()) {
+            mostrarDialogo();
+        }else {
+            bloquearAcciones();
+            solicitarAsientosDisponiblesAPI();}
+    }
 
     //Valida si los asientos siguen disponible consultando de nuevo la disponibilidad
-    public void consultarAsientosDisponibles() {
+    public void solicitarAsientosDisponiblesAPI() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = crearConsultaApi();
-        Log.d("Log", ""+crearConsultaApi());
+        final String url = crearUrlApi();
 
-// prepare the Request
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>()
                 {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        // display response
-                        Log.d("Log", " Respuesta de API "+response.toString());
+                    public void onResponse(JSONArray response) {
+
+                        Log.d("Log:", "Array "+ response );
+
+                        //Crea un array de los asientos ocupados
+                        //Si esta ocupado alguno devuelve la nueva lista a la ActivityCamion regresando al usuario
+                        for (int i = 0; i < response.length(); i++){
+
+                            try {
+                                //Verifica que no esten repeditos y los guarda en asientosOcupados
+                                  if ( noRepetidos(response.get(i).toString())) {
+                                       asientosOcupados.add(String.valueOf(response.get(i)));
+                                   }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                habilitarAcciones();
+                            }
+                        }
+
+                        //Imprime la lista de asientos(TEST)
+                       for (int i = 0; i < asientosOcupados.size(); i++){
+                        Log.d("Log:", "Los asientos ocupados son " + asientosOcupados.get(i));
+                           habilitarAcciones();
+                        }
+
+                        //Verdrifica asientos elegidos de todos los pasajeros y  los ocupados
+                        if (compararAsientos()) {
+                            vovlerCamionPorAsientoOcupado();
+                        } else {
+                            apartarAsientoDeTodosPasajeros();
+                        }
+
                     }
                 },
                 new Response.ErrorListener()
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Log:", url);
+                        Log.e("Log:", url + error);
+                        habilitarAcciones();
 
                     }
                 }
         );
 // add it to the RequestQueue
-        queue.add(getRequest);
+        queue.add(jsonArrayRequest);
     }
 
-    private String crearConsultaApi(){
+    private boolean compararAsientos(){
+
+        for (int i= 1; i<= Viaje.getTotalPasajeros(); i++){
+
+            for (int j=0; j<asientosOcupados.size();j++){
+
+                if (String.valueOf(Viaje.pasajeroArrayList.get(i).getNumero_asiento()) == asientosOcupados.get(j)){
+
+                    //Mostrar mensaje con el numero de asiento ocupado
+                    elAsientoOcupado = asientosOcupados.get(j);
+                    SingleToast.show(ActivityResumen.this, "El asiento "+elAsientoOcupado+" ya fue comprado, favor de elegir otro", Toast.LENGTH_LONG);
+
+                    return true;
+                }
+            }
+        } return false;
+    }
+
+    private boolean noRepetidos(String numero){
+
+        for (int i = 0; i < asientosOcupados.size(); i++){
+
+            if ( numero == asientosOcupados.get(i)){return false;}
+        }
+        return true;
+    }
+
+    private String crearUrlApi(){
         //"http://198.199.102.31:4000/api/buses/boleto/:corrida/:fecha/:hora";
         FormatoHorasFechas formatoHorasFechas = new FormatoHorasFechas();
-        String TEST= "http://198.199.102.31:4000/api/buses/boleto/"+
+        String TEST= "http://198.199.102.31:4000/api/buses/boleto/disponibles/"+
                 Viaje.getCorrida()+"/"+
                 Viaje.getFechaSalidaYear()+"-"+
                 Viaje.getFechaSalidaMes()+"-"+
                 Viaje.getFechaSalidaDiaNumero()+"/"+
                 Viaje.getHoraSalidaFormato24Militar();
 
-        Log.d("Log:", "http://198.199.102.31:4000/api/buses/boleto/:corrida/:fecha/:hora");
+        Log.d("Log:", "http://198.199.102.31:4000/api/buses/boleto/disponibles/:corrida/:fecha/:hora");
         Log.d("Log:", ""+TEST);
 
         return TEST;
-    }
-
-
-
-
-
-    public void cambiarActivityMetodoPago(View view) {
-
-       //consultarAsientosDisponibles();
-        //Se verifica si hay pasajeros con descuento y se muestra el dialogo para apartar los voletos
-        if (verificarDescuento()) {
-            mostrarDialogo();
-        }else {apartarAsientoDeTodosPasajeros();}
     }
 
     //Metodo POST CON VOLEY APARTAR 1 ASIENTO
@@ -254,40 +343,24 @@ public class ActivityResumen extends AppCompatActivity {
 
                 try {
 
-                    //Se obtiene la referencia el boleto y se guarda en datos del pasajero
+                    //Se obtiene la referencia del boleto y se guarda en datos del pasajero
                     JSONObject obj = new JSONObject(response);
                     String ref =(obj.getJSONObject("MYSQL").getString("insertId"));
 
-                        if (Viaje.pasajeroArrayList.get(1).getReferencia() =="0"){
-                            Viaje.pasajeroArrayList.get(1).setReferencia(ref);
-                        }else if (Viaje.pasajeroArrayList.get(2).getReferencia() =="0"){
-                            Viaje.pasajeroArrayList.get(2).setReferencia(ref);
-                        } else if (Viaje.pasajeroArrayList.get(3).getReferencia() =="0"){
-                            Viaje.pasajeroArrayList.get(3).setReferencia(ref);
-                        } else if (Viaje.pasajeroArrayList.get(4).getReferencia() =="0"){
-                            Viaje.pasajeroArrayList.get(4).setReferencia(ref);
-                        }
+                    Viaje.pasajeroArrayList.get(total).setReferencia(ref);
 
-                        //Se cambia de activiti cuando termina de generar las referencias
-                        if (total == Viaje.getTotalPasajeros())
-                        {
-                            goMetododepago();
-                        }
+                    guardarPasajeroEnDB(pasajero);
 
-                    crearBD(pasajero);
+                    Log.d("Referencias", "1 "+Viaje.pasajeroArrayList.get(1).getReferencia());
+                    Log.d("Referencias", "2 "+Viaje.pasajeroArrayList.get(2).getReferencia());
+                    Log.d("Referencias", "3 "+Viaje.pasajeroArrayList.get(3).getReferencia());
+                    Log.d("Referencias", "4 "+Viaje.pasajeroArrayList.get(4).getReferencia());
 
-                    Log.d("Referencias", ""+Viaje.pasajeroArrayList.get(1).getReferencia());
-
-
-                    try {
-
-                        JSONArray jsonArrayMYSQL = obj.getJSONArray("MYSQL");
-
-
-                        Log.d("My App", jsonArrayMYSQL.toString());
-
-                    } catch (Throwable t) {
-                        Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
+                    //Se cambia de activiti cuando termina de generar las referencias
+                    if (total == Viaje.getTotalPasajeros())
+                    {
+                        habilitarAcciones();
+                        goMetododepago();
                     }
 
                 } catch (Throwable t) {
@@ -313,11 +386,15 @@ public class ActivityResumen extends AppCompatActivity {
                 String mMinute = String.valueOf(c.get(Calendar.MINUTE));
                 String mSecond = String.valueOf(c.get(Calendar.SECOND));
 
-                //Agregar 0 a minutos y seguntos si tienen un digito
+                //Agregar 0 a horas, minutos  y segundossi tienen un digito
+                if( mHour.length() == 1){
+                    mHour = "0" + mHour;
+                }
 
                 if( mMinute.length() == 1){
                     mMinute = "0" + mMinute;
                 }
+
                 if( mSecond.length() == 1){
                     mSecond = "0" + mSecond;
                 }
@@ -349,7 +426,7 @@ public class ActivityResumen extends AppCompatActivity {
     }
 
     //Se crea una BD para pasar el ID de referencia obtenido del metodo apartado de boletos
-    private void crearBD(Pasajero pasajero){
+    private void guardarPasajeroEnDB(Pasajero pasajero){
 
         myDB.createRecords(
                 myDB.selectRecords().getCount()+1,                                  //id
@@ -361,9 +438,9 @@ public class ActivityResumen extends AppCompatActivity {
                 Viaje.getDestino(),                                                //Destino
                 Viaje.getFechaSalidaDiaNumero()+ " de "+ Viaje.getFechaSalidaMesNombre()+" "+Viaje.getFechaSalidaYear(),    //Fecha Salida
                 Viaje.getHoraSalidaFormato12(),                                             //Hora
-                "paypal",                                                          //Tipo de pago
+                "No se finalizó  la compra",                                                          //Tipo de pago
                 pasajero.getReferencia(),                                    //Referencia
-                " Pendiente confirmacion de pago");                                                      //Status de pago
+                "");                                                      //Status de pago
     }
 
     @Override
@@ -382,13 +459,14 @@ public class ActivityResumen extends AppCompatActivity {
 
         Button aceptar = dialogMain.findViewById(R.id.btn_aceptar_dialogoInformativo);
         TextView texto= dialogMain.findViewById(R.id.tv_texto_dialogoInformativo);
-        texto.setText("USTED VA A COMPRAR UN BOLETO CON DESCUENTO, FAVOR DE PRESENTAR IDENTIFICACIÓN QUE RESPALDE DICHO DESCUENTO.");
+        texto.setText("Usted va a comprar un boleto con descuento, favor de presnetar identificación que respalde dicho descuento.");
+
 
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                apartarAsientoDeTodosPasajeros();
+                solicitarAsientosDisponiblesAPI();
                 dialogMain.dismiss();
 
 
@@ -415,6 +493,7 @@ public class ActivityResumen extends AppCompatActivity {
     }
 
     private void goMetododepago() {
+        Viaje.setTiempo(30000);
         Intent intent = new Intent(ActivityResumen.this, ActivityMetodoPago.class);
         startActivity(intent);
     }
@@ -425,42 +504,39 @@ public class ActivityResumen extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //MENSAJE DE PAGO PERO NO SE DONDE VA
+    private void validarDatosActivarBoton(){
 
-    private void mostrarDialogoPAGO() {
+        Button botonContinuarActivo = (Button) findViewById(R.id.btn_confirmarActivo_resumen);
+        Button botonContinuarInactivo = (Button) findViewById(R.id.btn_confirmarInactivo_resumen);
 
-        final Dialog dialogMain;
+        if ( aceptarCompra.isChecked() && aceptarTerminos.isChecked()){
+            botonContinuarActivo.setVisibility(View.VISIBLE);
+            botonContinuarInactivo.setVisibility(View.GONE);
+        }
+        else {
+            botonContinuarActivo.setVisibility(View.GONE);
+            botonContinuarInactivo.setVisibility(View.VISIBLE);
+        }
+    }
 
-        dialogMain = new Dialog(ActivityResumen.this);
-        dialogMain.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogMain.setContentView(R.layout.dialogo_informativo);
+    public void vovlerCamionPorAsientoOcupado() {
 
-        Button aceptar = dialogMain.findViewById(R.id.btn_aceptar_dialogoInformativo);
-        aceptar.setText("Correcto");
+        Intent intent = new Intent(this, ActivityCamion.class);
+        intent.putExtra("Ocupados",asientosOcupados);
+        startActivity(intent);
+    }
 
-        Button cancelar = dialogMain.findViewById(R.id.btn_cancelar_dialogoInformativo);
+    public void solicitarAceptarTerminos(View view) {
 
-        TextView texto= dialogMain.findViewById(R.id.tv_texto_dialogoInformativo);
-        texto.setText("Acepto el monto total de mi compra.");
+        SingleToast.show(this, "Para continuar acepte terminos y condiciones", Toast.LENGTH_LONG);
 
-        cancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogMain.dismiss();
-            }
-        });
+    }
 
-        aceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    private void bloquearAcciones(){
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
 
-           //     Intent intent = new Intent(ActivityResumen.this,ActivityCamion.class);
-            //    startActivity(intent);
-
-                dialogMain.dismiss();
-
-            }
-        });
-        dialogMain.show();
+    private void habilitarAcciones(){
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }

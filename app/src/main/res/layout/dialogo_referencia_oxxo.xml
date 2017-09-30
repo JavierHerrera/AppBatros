@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="La referencia tambien fue enviada a su correo"
+            android:text="@string/referencia_oxxo"
             style="@style/layoutMain"/>
 
 

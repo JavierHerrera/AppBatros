@@ -9,6 +9,15 @@
             android:src="@drawable/asiento_ocupado"
             android:layout_marginBottom="9dp"/>
 
+        <ImageView
+            android:id="@+id/imagen_tv_asientos"
+            android:layout_width="50dp"
+            android:layout_height="13dp"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"/>
+
+
         <TextView
             android:id="@+id/numero_asiento"
             android:layout_width="wrap_content"
@@ -18,5 +27,6 @@
             android:layout_marginTop="12dp"
             android:textColor="@color/grisClaro"
            android:layout_centerHorizontal="true"/>
+
 
 </RelativeLayout>

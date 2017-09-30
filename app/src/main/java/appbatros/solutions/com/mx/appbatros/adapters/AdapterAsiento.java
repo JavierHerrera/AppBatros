@@ -20,7 +20,7 @@ public class AdapterAsiento extends RecyclerView.Adapter<AdapterAsiento.AsientoV
     public static class AsientoViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
         private View view;
-        private ImageView imagen;
+        private ImageView imagen,tv;
         private TextView numeroAsiento;
 
         public AsientoViewHolder(View v) {
@@ -28,6 +28,8 @@ public class AdapterAsiento extends RecyclerView.Adapter<AdapterAsiento.AsientoV
             view = v;
             imagen = (ImageView) v.findViewById(R.id.imagen_asientos);
             numeroAsiento = (TextView) v.findViewById(R.id.numero_asiento);
+            tv = (ImageView) v.findViewById(R.id.imagen_tv_asientos);
+
         }
     }
 
@@ -52,6 +54,7 @@ public class AdapterAsiento extends RecyclerView.Adapter<AdapterAsiento.AsientoV
     public void onBindViewHolder(final AsientoViewHolder viewHolder, final int position) {
         final Asiento asientoItem = items.get(position);
         viewHolder.imagen.setImageResource(asientoItem.getImagen());
+        viewHolder.tv.setImageResource(asientoItem.getTv());
         int numAsiento = asientoItem.getNumeroAsiento();
         final String asiento = String.valueOf(numAsiento);
         viewHolder.numeroAsiento.setText(asiento);

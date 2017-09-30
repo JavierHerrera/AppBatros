@@ -1,11 +1,15 @@
 package appbatros.solutions.com.mx.appbatros;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,9 +28,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import appbatros.solutions.com.mx.appbatros.DB.ConektaDB;
 import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
+import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
 
 public class ActivityRegsistrarConektaID extends AppCompatActivity {
 
@@ -36,10 +42,21 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
     private RequestQueue requestQueue;
     final String TAG = "ResumenLog";
 
+    //Variables de contador
+    TextView tiempo;
+    private static final String FORMAT = "%02d:%02d";
+    CountDownTimer contador;
+
+    Dialog dialogSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regsistrar_conekta_id);
+
+        crearDialogoSpinner();
+        //5 minutos para finalziar la compra
+        contador();
 
         cargarActionBar();
 
@@ -77,14 +94,8 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
 
     }
 
-    public void goHome() {
-
-        Intent intent = new Intent(this, ActivityMain.class);
-        startActivity(intent);
-    }
-
     public void validarDatosyGuardarlos(View view) {
-
+        mostrarSpinner();
         mandarPOSTdePagoAprovado(String.valueOf(nombre.getText()), String.valueOf(correo.getText()), String.valueOf(telefono.getText()));
 
 
@@ -100,6 +111,7 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i("VOLLEY", response);
+                        quitarSpinnerBar();
 
                         try {
 
@@ -135,15 +147,21 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("VOLLEY", error.toString());
+                        quitarSpinnerBar();
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
-                params.put("nombre", "nombre alguien");                 //correo del cliente
-                params.put("correo", "alguien@gmail.com");                 //telefono formato 6623404256
-                params.put("telefono", "6623415665");                 // telefono
+                params.put("nombre", nombre);                 //correo del cliente
+                params.put("correo", correo);                 //telefono formato 6623404256
+                params.put("telefono", telefono);               // telefono
+
+/*              Datos Hardcore
+                params.put("nombre", "nombr alguien");                 //correo del cliente
+                params.put("correo", "alguien2@gmail.com");                 //telefono formato 6623404256
+                params.put("telefono", "6623415660"); */                // telefono
 
                 return params;
             }
@@ -159,5 +177,58 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
                 String.valueOf(correo.getText()),       //Correo
                 String.valueOf(telefono.getText()),     //Telefono
                 conekta_id);                            //conekta_id
+    }
+
+    private void contador() {
+
+        tiempo =(TextView)findViewById(R.id.tv_tiempo);
+        contador = new CountDownTimer(Viaje.getTiempo(), 1000) {                     //geriye sayma
+
+            public void onTick(long millisUntilFinished) {
+
+                tiempo.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toMinutes( millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+
+                Viaje.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
+            }
+
+            public void onFinish() {
+                goHome();
+            }
+        }.start();
+    }
+
+    public void goHome() {
+
+        Intent intent = new Intent(this, ActivityMain.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        contador.cancel();
+        super.onBackPressed();
+    }
+
+    private void crearDialogoSpinner() {
+
+        dialogSpinner = new Dialog(ActivityRegsistrarConektaID.this);
+        dialogSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogSpinner.setContentView(R.layout.dialog_spinner);
+        dialogSpinner.setCanceledOnTouchOutside(false);
+        dialogSpinner.setCancelable(false);
+    }
+
+    private void mostrarSpinner(){
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        dialogSpinner.show();
+
+    }
+
+    private void quitarSpinnerBar(){
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        dialogSpinner.cancel();
     }
 }

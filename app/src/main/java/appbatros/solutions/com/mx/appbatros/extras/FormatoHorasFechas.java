@@ -22,12 +22,25 @@ public class FormatoHorasFechas {
     public String dosDigitosyAM_PM(String hora){
 
         //K:mm  para que aparesca en formato de 24h la "a" es para am pm
-        String rawTimestamp = hora; // For example
-        DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
-        DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mm a");
-        DateTime dateTime = inputFormatter.parseDateTime(rawTimestamp);
-        String formattedTimestamp = outputFormatter.print(dateTime.getMillis());
-        return formattedTimestamp;
+       // For example
+
+        String s = hora.replaceFirst("^0*", "");
+
+        //Con esto se elimina el error cuando las horas son 00
+        if (s.length() == 2){
+            return "12:"+s+" AM";
+        }
+
+
+        try {
+            DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
+            DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mm a");
+            DateTime dateTime = inputFormatter.parseDateTime(hora);
+            String formattedTimestamp = outputFormatter.print(dateTime.getMillis());
+            return formattedTimestamp;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }return hora;
 
     }
 

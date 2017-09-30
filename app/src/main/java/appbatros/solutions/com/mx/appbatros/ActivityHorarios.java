@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,11 +46,17 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
 
     int tarifaAdulto, tarifaExtudiante, tarifaInsen, tarifaMenor, tarifaNormalTotal;
     int tarifaExpressAdulto, tarifaExpressExtudiante, tarifaExpressInsen, tarifaExpressMenor,tarifaExpressTotal;
+
+    //Dialogo de spinner
+    Dialog dialogSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horarios);
 
+        crearDialogoSpinner();
+        mostrarSpinerBar();
         cargarActionBar();
         cargarCabecera();
 
@@ -77,6 +84,7 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
         tarifaExpressInsen = 0;
         tarifaExpressMenor = 0;
         tarifaExpressTotal = 0;
+
     }
 
     private void cargarActionBar() {
@@ -184,10 +192,12 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
 
                                 adapter.notifyDataSetChanged();
 
+                                quitarSpinnerBar();
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            quitarSpinnerBar();
                         }
                     }
                 },
@@ -196,7 +206,7 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Log:", url);
-
+                        quitarSpinnerBar();
                     }
                 }
         );
@@ -307,8 +317,10 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
         Button cancelar = dialogMain.findViewById(R.id.btn_cancelar_dialogoInformativo);
 
         TextView texto= dialogMain.findViewById(R.id.tv_texto_dialogoInformativo);
-        texto.setText("Elegiste un viaje de "+Viaje.getOrigen()+" a "+Viaje.getDestino()+
-                " para el dia "+Viaje.getFechaDiaSemana()+" "+Viaje.getHoraSalidaFormato12()+", ¿es correcto?");
+        texto.setText("Elegiste un viaje de "+Viaje.getOrigen()+
+                " a "+Viaje.getDestino()+
+                " para el dia "+Viaje.getFechaDiaSemana()+" "+Viaje.getFechaSalidaDiaNumero()+" a las "
+                +Viaje.getHoraSalidaFormato12()+", ¿Es correcto?");
 
         cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -330,6 +342,27 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
             }
         });
         dialogMain.show();
+    }
+
+    private void crearDialogoSpinner() {
+
+        dialogSpinner = new Dialog(ActivityHorarios.this);
+        dialogSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogSpinner.setContentView(R.layout.dialog_spinner);
+        dialogSpinner.setCanceledOnTouchOutside(false);
+        dialogSpinner.setCancelable(false);
+    }
+
+    private void mostrarSpinerBar(){
+        dialogSpinner.show();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
+    }
+
+    private void quitarSpinnerBar(){
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        dialogSpinner.cancel();
     }
 
 }

@@ -5,8 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="appbatros.solutions.com.mx.appbatros.ActivityAgregarTarjeta"
-    android:orientation="vertical"
-    style="@style/layoutMain">
+    android:orientation="vertical">
+    <RelativeLayout
+
+        style="@style/cabeceraOrigenDestino"
+        android:layout_width="match_parent"
+        android:layout_height="23dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                style="@style/cabeceraOrigenDestino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:text="Tiempo restante para finalziar compra "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_tiempo"
+                style="@style/cabeceraOrigenDestino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="04:15 "
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +65,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="16dp"
+
+    style="@style/layoutMain">
 
     <EditText
         android:id="@+id/editTextTitularAgregarTarjeta"

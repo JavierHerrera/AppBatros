@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:text="La referencia tambien fue enviada a su correo"
             android:textSize="20sp"
-            android:textColor="@color/negro"
             style="@style/layoutMain"/>
 
 

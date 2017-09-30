@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import org.json.JSONException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import appbatros.solutions.com.mx.appbatros.DB.ConektaDB;
 import appbatros.solutions.com.mx.appbatros.DB.HistorialDB;
@@ -83,6 +85,11 @@ public class ActivityMetodoPago extends AppCompatActivity {
     private RequestQueue requestQueue;
     final String TAG = "ResumenLog";
 
+    //Variables de contador
+    TextView tiempo;
+    private static final String FORMAT = "%02d:%02d";
+    CountDownTimer contador;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +97,8 @@ public class ActivityMetodoPago extends AppCompatActivity {
 
        cargarActionBar();
         requestQueue = Volley.newRequestQueue(this);
+
+        contador();
 
     }
 
@@ -133,11 +142,10 @@ public class ActivityMetodoPago extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
 
                         //Mandar confirmacion de pago realizado de cada boleto
+
                         for (int i = 1; i <=Viaje.getTotalPasajeros() ; i++) {
                             aprobarPago(Viaje.pasajeroArrayList.get(i).getReferencia(), "Paypal",i);
-
                         }
-
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -213,7 +221,7 @@ public class ActivityMetodoPago extends AppCompatActivity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
-        thingToBuy = new PayPalPayment(new BigDecimal(Viaje.getImporteTotal()), "USD",
+        thingToBuy = new PayPalPayment(new BigDecimal(Viaje.getImporteTotal()), "MXN",
                 "Total", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent1 = new Intent(ActivityMetodoPago.this,
                 PaymentActivity.class);
@@ -243,6 +251,8 @@ public class ActivityMetodoPago extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i("VOLLEY", response);
+
+                        goHistorial();
                     }
                 },
                 new Response.ErrorListener() {
@@ -272,8 +282,6 @@ public class ActivityMetodoPago extends AppCompatActivity {
     //METODO DE PAGO CON TARJETA CREDIDTO/DEBITO
     public void cambiarActivityAgregarTarjeta(View view) {
 
-
-
         ConektaDB myDB = new ConektaDB(this);
         Cursor cursor = myDB.selectRecords() ;
 
@@ -293,9 +301,62 @@ public class ActivityMetodoPago extends AppCompatActivity {
 
     }
 
+    private void contador2() {
+
+        //TEST DE RELOJ
+        tiempo =(TextView)findViewById(R.id.tv_tiempo);
+
+        new CountDownTimer(Viaje.getTiempo(), 1000) { // adjust the milli seconds here
+
+            public void onTick(long millisUntilFinished) {
+
+
+                tiempo.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toMinutes( millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+
+                Viaje.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
+
+            }
+
+            public void onFinish() {
+                goHome();
+            }
+        }.start();
+    }
+
+    private void contador() {
+
+        tiempo =(TextView)findViewById(R.id.tv_tiempo);
+        contador = new CountDownTimer(Viaje.getTiempo(), 1000) {                     //geriye sayma
+
+            public void onTick(long millisUntilFinished) {
+
+                tiempo.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toMinutes( millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+
+                Viaje.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
+            }
+
+            public void onFinish() {
+                goHome();
+            }
+        }.start();
+    }
+
     public void goHome() {
 
         Intent intent = new Intent(this, ActivityMain.class);
+        startActivity(intent);
+    }
+
+    private void goHistorial(){
+
+        contador.cancel();
+        Intent intent = new Intent(ActivityMetodoPago.this,ActivityHistorial.class);
         startActivity(intent);
     }
 
@@ -303,4 +364,10 @@ public class ActivityMetodoPago extends AppCompatActivity {
         Intent intent = new Intent(this, ActivityOxxo.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        //Se sobre escribe para que no te permita regresar a la pantalla de resumen
+    }
+
 }

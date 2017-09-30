@@ -10,7 +10,7 @@ public class ConektaDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ConectaBD";
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE =

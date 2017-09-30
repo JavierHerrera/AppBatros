@@ -7,6 +7,7 @@
     <color name="blanco">#ffffff</color>
     <color name="grisClaro">#ecebeb</color>
     <color name="grisClaroTransparencia">#b1ffffff</color>
+    <color name="Transparente">#00ffffff</color>
     <color name="grisNormal">#e0e0e0</color>
     <color name="grisOscuro">#aeaeae</color>
     <color name="grisMuyOscuro">#636363</color>

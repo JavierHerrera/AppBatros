@@ -1,0 +1,77 @@
+{
+  "status": 1,
+  "respuesta": {
+    "livemode": false,
+    "amount": 20000,
+    "currency": "MXN",
+    "payment_status": "paid",
+    "amount_refunded": 0,
+    "customer_info": {
+      "email": "alguien@gmail.com",
+      "phone": "6623415665",
+      "name": "nombre alguien",
+      "corporate": false,
+      "customer_id": "cus_2hFKUs2fz3HuNF6aU",
+      "object": "customer_info"
+    },
+    "object": "order",
+    "id": "ord_2hHWk52yYsn3mUK5L",
+    "metadata": {},
+    "created_at": 1506558890,
+    "updated_at": 1506558900,
+    "line_items": {
+      "object": "list",
+      "has_more": false,
+      "total": 1,
+      "data": [
+        {
+          "name": "Boleto autobus",
+          "unit_price": 20000,
+          "quantity": 1,
+          "object": "line_item",
+          "id": "line_item_2hHWk52yYsn3mUK5J",
+          "parent_id": "ord_2hHWk52yYsn3mUK5L",
+          "metadata": {},
+          "antifraud_info": {}
+        }
+      ]
+    },
+    "charges": {
+      "object": "list",
+      "has_more": false,
+      "total": 1,
+      "data": [
+        {
+          "id": "59cc43aaffecf90ac4cfc300",
+          "livemode": false,
+          "created_at": 1506558890,
+          "currency": "MXN",
+          "device_fingerprint": "7ad824c91c607054",
+          "payment_method": {
+            "name": "Josue Camara",
+            "exp_month": "11",
+            "exp_year": "17",
+            "auth_code": "447363",
+            "object": "card_payment",
+            "type": "credit",
+            "last4": "4242",
+            "brand": "visa",
+            "issuer": "",
+            "account_type": "",
+            "country": "US",
+            "fraud_score": 24,
+            "fraud_indicators": []
+          },
+          "object": "charge",
+          "description": "Payment from order",
+          "status": "paid",
+          "amount": 20000,
+          "paid_at": 1506558899,
+          "fee": 963,
+          "customer_id": "cus_2hFKUs2fz3HuNF6aU",
+          "order_id": "ord_2hHWk52yYsn3mUK5L"
+        }
+      ]
+    }
+  }
+}

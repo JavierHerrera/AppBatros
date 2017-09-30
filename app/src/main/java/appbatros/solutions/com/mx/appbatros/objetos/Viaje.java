@@ -15,6 +15,7 @@ public class Viaje {
     private static String idBoleto;
     private static int totalPasajeros;
     public static ArrayList<Pasajero> pasajeroArrayList = new ArrayList<>(4);
+    private static long tiempo = 300000;
 
     public static int getTotalAdultos(){
         int total= 0;
@@ -187,5 +188,13 @@ public class Viaje {
 
     public static void setIdBoleto(String idBoleto) {
         Viaje.idBoleto = idBoleto;
+    }
+
+    public static long getTiempo() {
+        return tiempo;
+    }
+
+    public static void setTiempo(long tiempo) {
+        Viaje.tiempo = tiempo;
     }
 }

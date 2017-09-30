@@ -1,5 +1,7 @@
 package appbatros.solutions.com.mx.appbatros;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,31 +23,36 @@ import appbatros.solutions.com.mx.appbatros.objetos.Historial;
 
 public class ActivityHistorial extends AppCompatActivity {
 
-    private RecyclerView recycler;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager lManager;
     private List items = new ArrayList();
+
+    private String referenciaOxxo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
 
+
+        //Si recibe un pago tipo oxxo, toma la referencia y muestra un mensaje
+        boolean pagoOxxo = false;
+        try {
+            Intent parentIntent = getIntent();
+            pagoOxxo = parentIntent.getBooleanExtra("PagoOxxo", false);
+            referenciaOxxo = parentIntent.getStringExtra("ReferenciaOxxo");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         cargarActionBar();
 
         //Iniciar el adaptador y recycle
-        recycler = (RecyclerView) findViewById(R.id.recicladorHistorial);
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.recicladorHistorial);
         recycler.setHasFixedSize(true);
 
         // Usar un administrador para LinearLayout
-        lManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(getApplicationContext());
         recycler.setLayoutManager(lManager);
-
-
-
-
-
-
         HistorialDB myDB = new HistorialDB(this);;
 
         Cursor cursor = myDB.selectRecords();
@@ -83,9 +92,20 @@ public class ActivityHistorial extends AppCompatActivity {
             }
         }
 
+        //Validar si el pago fue por oxxo
+        if (pagoOxxo){
+            mostrarDialogoOxxo();
+        }
 
-        adapter = new AdapterHistorial(items);
+        RecyclerView.Adapter adapter = new AdapterHistorial(items);
         recycler.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ActivityMain.class);
+        startActivity(intent);
+
     }
 
     private void cargarActionBar() {
@@ -111,5 +131,27 @@ public class ActivityHistorial extends AppCompatActivity {
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
+    }
+
+    private void mostrarDialogoOxxo() {
+
+        final Dialog dialogMain;
+
+        dialogMain = new Dialog(ActivityHistorial.this);
+        dialogMain.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogMain.setContentView(R.layout.dialogo_referencia_oxxo);
+
+        Button aceptar = dialogMain.findViewById(R.id.botonAceptarDialogoOxxo);
+        TextView referencia= dialogMain.findViewById(R.id.tv_referenciaOxxo);
+        referencia.setText(referenciaOxxo);
+
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogMain.dismiss();
+
+            }
+        });
+        dialogMain.show();
     }
 }

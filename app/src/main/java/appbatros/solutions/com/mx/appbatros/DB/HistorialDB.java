@@ -27,12 +27,10 @@ public class HistorialDB {
     public final static String PAS_REFERENCIA ="referencia";
     public final static String PAS_STATUS ="status";
 
-
     public HistorialDB(Context context){
         dbHelper = new HistorialDBHelper(context);
         database = dbHelper.getWritableDatabase();
     }
-
 
     public long createRecords(int id, String nombre, String tipoPasajero, String asiento,
                               String importe, String origen, String destino, String fecha,
@@ -66,15 +64,29 @@ public class HistorialDB {
         return mCursor; // iterate to get each value.
     }
 
-    public  void actualizarPago(String referencia, String tipoPago){
+    public  void actualizarPago(String numeroBoleto, String tipoPago){
 
         ContentValues cv = new ContentValues();
         cv.put("tipoPago",tipoPago);
         cv.put("status"," ");//These Fields should be your String values of actual column names
 
-        Log.d("Referencias", ""+referencia+" ");
+        Log.d("Numero de boleto", ""+numeroBoleto+" ");
+
+        database.update(PAS_TABLE, cv, "referencia = "+ numeroBoleto, null );
+        //myDB.update(TableName, cv, "_id="+id, null);
+    }
+
+    public  void actualizarPagoOxxo(String referencia, String tipoPago, String oxxoRef){
+
+        ContentValues cv = new ContentValues();
+        cv.put("tipoPago",tipoPago);
+        cv.put("status"," Referencia "+oxxoRef);//These Fields should be your String values of actual column names
+
+        Log.d("Numero de boleto", ""+referencia+" ");
 
         database.update(PAS_TABLE, cv, "referencia = "+ referencia, null );
         //myDB.update(TableName, cv, "_id="+id, null);
     }
+
+
 }

@@ -236,7 +236,6 @@
             android:textColor="@color/negro"
             android:textSize="16sp"
             android:elevation="1dp"
-
             />
 
     </LinearLayout>
@@ -657,19 +656,49 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+
+                    <CheckBox
+                        android:id="@+id/checkb_aceptarcompra_resumen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Acepto el monto total de compra"
+                        android:textSize="9sp"
+                        />
+
+                    <CheckBox
+                        android:id="@+id/checkb_aceptoterminos_resumen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" He leído y acepto los términos y condiciones"
+                        android:textSize="9sp"
+                        />
+
+                </LinearLayout>
+
                 <Button
+                    android:id="@+id/btn_confirmarActivo_resumen"
                     android:onClick="cambiarActivityMetodoPago"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/botonNormal"
+                    android:visibility="gone"
                     android:text="Confirmar"/>
 
                 <Button
-                    android:visibility="gone"
-                    android:onClick="VerHistorial"
+                    android:id="@+id/btn_confirmarInactivo_resumen"
+                    android:onClick="solicitarAceptarTerminos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Historial"/>
+                    style="@style/botonNormalInactivo"
+                    android:visibility="visible"
+                    android:text="Confirmar"/>
 
     </LinearLayout>
 

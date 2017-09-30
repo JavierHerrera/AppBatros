@@ -2,9 +2,11 @@ package appbatros.solutions.com.mx.appbatros;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,8 +39,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import appbatros.solutions.com.mx.appbatros.DB.ConektaDB;
+import appbatros.solutions.com.mx.appbatros.DB.HistorialDB;
 import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
 import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
 import io.conekta.conektasdk.Card;
@@ -64,11 +70,24 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
     private ArrayList<String> last4Array = new ArrayList<>();
     private ArrayList<String> tipoTarjetaArray = new ArrayList<>();
 
+    //Variables de contador
+    TextView tiempo;
+    private static final String FORMAT = "%02d:%02d";
+    CountDownTimer contador;
+
+    //Variables Requeridas para metodo POST
+    private RequestQueue requestQueue;
+    final String TAG2 = "ResumenLog";
+
+    Dialog dialogSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_tarjeta);
 
+        crearDialogoSpinner();
+        contador();
         cargarActionBar();
         //Se verifica si hay tarjetas asociadas
         revisarTarjetasAosiadas();
@@ -76,6 +95,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
         mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueueRegistro = Volley.newRequestQueue(getApplicationContext());
         requestQueuePago = Volley.newRequestQueue(getApplicationContext());
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         clienteID = consultarClienteIdDB();
 
@@ -157,7 +177,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
     }
 
     //Muestra el dialogo con la lista de tarjetas
-    private void mostrarDialogoConTaretasAsociadas() {
+    private void mostrarDialogoConTarjetasAsociadas() {
 
         final Dialog dialogMain;
 
@@ -240,6 +260,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
 
     //Boton que agrega tarjeta y Pagar
     public void AgregarTarjeta(View view) {
+        mostarSpinnerBar();
         crearConektaID();
 
     }
@@ -275,6 +296,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
                     //TODO: Handle error
                     Log.d("Log: ", " Error al obtener token" + err.toString());
                     SingleToast.show(ActivityAgregarTarjeta.this, "No se registro la tarjeta", Toast.LENGTH_LONG);
+                    quitarSpinnerBar();
 
                 }
             }
@@ -307,6 +329,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            quitarSpinnerBar();
                         }
                     }
                 },
@@ -324,7 +347,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
                 params.put("conektaid", clienteID);  //d del cliente con formato cus_2hBBx84ua6qT8Hxwx
                 params.put("cardtoken", conektaID);  //fdsafdsfd
 
-                Log.e("xx", clienteID + "      " + String.valueOf(tokenConekta));
+                Log.e("xx", clienteID + "      " +conektaID);
 
                 return params;
             }
@@ -342,9 +365,32 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response) {
-                        Log.i("Log:", "Rerspuesta de pago " + response);
-                        SingleToast.show(ActivityAgregarTarjeta.this, "Respuesta del Pago", Toast.LENGTH_LONG);
+                        Log.i(TAG, "Respuesta = " + response);
 
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            if (jsonObject.has("status")){
+                                if (jsonObject.getInt("status") == 1){
+                                    Log.d(TAG, "Status OK");
+
+                                    quitarSpinnerBar();
+                                    actualziarPagos();
+
+                                } else {
+                                    Log.e(TAG, "Status error!!!");
+
+                                    SingleToast.show(ActivityAgregarTarjeta.this,
+                                            "No se pudo realizar el pago",
+                                            Toast.LENGTH_LONG);
+                                }
+                            } else {
+                                Log.d(TAG, "Sin status");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e(TAG, "Error = " + e.getMessage());
+                        }quitarSpinnerBar();
                     }
                 },
                 new Response.ErrorListener() {
@@ -361,14 +407,69 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
-                params.put("conektaid", clienteID);  //d del cliente con formato cus_2hBBx84ua6qT8Hxwx
+                params.put("conektaid",clienteID );
+                params.put("monto", ""+Viaje.getImporteTotal());  //importe de la compra - Ejemplo 30000 para cobrar $300.00
+                params.put("descripcion", "Boleto autobus");  //descripcion de la compra
+                params.put("cardid", tarjetaID);
+
+
+ /*             Lo hardcore
+                params.put("conektaid",clienteID );
                 params.put("monto", "200" + "00");  //importe de la compra - Ejemplo 30000 para cobrar $300.00
                 params.put("descripcion", "Boleto autobus");  //descripcion de la compra
-                params.put("cardid", "src_2hFKbdFqGBDpWwB2B");  //se genera al registrar tarjeta src_2hBFq5Mk2Q6hYc7Zq
+                params.put("cardid", tarjetaID);*/
 
                 return params;
             }
-        }).setTag(TAG);
+        }).setRetryPolicy(new DefaultRetryPolicy(300000, 3, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)).setTag(TAG);
+    }
+
+    //Metodos para actualizar BD como pagado
+    private void actualziarPagos() {
+
+        for (int i = 1; i <=Viaje.getTotalPasajeros() ; i++) {
+            aprobarPagoPasajero(Viaje.pasajeroArrayList.get(i).getReferencia(), "Tarjeta",i);
+            Log.d("Log", "Pasajero Referencia" + Viaje.pasajeroArrayList.get(i).getReferencia());
+        SingleToast.show(ActivityAgregarTarjeta.this, "Pago exitoso", Toast.LENGTH_LONG);
+        }
+    }
+
+    private void aprobarPagoPasajero(String referencia, String tipoPago, int numeroOperacion) {
+
+        mandarPOSTdePagoAprovado(referencia,tipoPago, numeroOperacion);
+
+        HistorialDB myDB = new HistorialDB(this);
+        myDB.actualizarPago(referencia , tipoPago);
+
+    }
+
+    private void mandarPOSTdePagoAprovado(final String id, final String tipoPago, int total) {
+        requestQueue.add(new StringRequest(Request.Method.POST,
+                "http://198.199.102.31:4000/api/buses/boleto/update",
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("VOLLEY", response);
+                        goHistorial();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("tipopago",tipoPago);  //tipo de pago (Tarjeta, Paypal, OxxoPay)
+                params.put("id",id);  //id del boleto que se obtiene cuando este se aparta
+
+                return params;
+            }
+        }).setTag(TAG2);
     }
 
     //METODOS AUXILARES
@@ -418,4 +519,65 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
 
     }
+
+    private void contador() {
+
+        tiempo =(TextView)findViewById(R.id.tv_tiempo);
+        contador = new CountDownTimer(Viaje.getTiempo(), 1000) {                     //geriye sayma
+
+            public void onTick(long millisUntilFinished) {
+
+                tiempo.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toMinutes( millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+
+                Viaje.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
+            }
+
+            public void onFinish() {
+                goHome();
+            }
+        }.start();
+    }
+
+    private void goHistorial(){
+
+        contador.cancel();
+        Intent intent = new Intent(ActivityAgregarTarjeta.this,ActivityHistorial.class);
+        startActivity(intent);
+    }
+
+    public void goHome() {
+
+        Intent intent = new Intent(this, ActivityMain.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        contador.cancel();
+        super.onBackPressed();
+    }
+
+    private void crearDialogoSpinner() {
+
+        dialogSpinner = new Dialog(ActivityAgregarTarjeta.this);
+        dialogSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogSpinner.setContentView(R.layout.dialog_spinner);
+        dialogSpinner.setCanceledOnTouchOutside(false);
+        dialogSpinner.setCancelable(false);
+    }
+
+    private void mostarSpinnerBar(){
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        dialogSpinner.show();
+
+    }
+
+    private void quitarSpinnerBar(){
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        dialogSpinner.cancel();
+    }
+
 }
