@@ -163,11 +163,12 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
                 params.put("correo", "alguien2@gmail.com");                 //telefono formato 6623404256
                 params.put("telefono", "6623415660"); */                // telefono
 
+                Log.i("Log", "parametros = " + params.toString());
                 return params;
             }
         }).setTag(TAG);
     }
-
+    
     public void guardarDatosDB(String conekta_id) {
 
         ConektaDB myDB = new ConektaDB(this);
@@ -202,8 +203,8 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
 
     public void goHome() {
         Intent intent = new Intent(this, ActivityMain.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
     }
 
     @Override

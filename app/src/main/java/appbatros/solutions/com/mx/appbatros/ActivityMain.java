@@ -126,13 +126,14 @@ public class ActivityMain extends AppCompatActivity implements
 
         ImageView backButton = mCustomView.findViewById(R.id.imageView_Back);
         backButton.setImageResource(R.drawable.icon_back);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        backButton.setVisibility(View.INVISIBLE);
+        /*backButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
-        });
+        });*/
 
         ImageButton historialButton = mCustomView.findViewById(R.id.imageView_Home);
         historialButton.setImageResource(R.drawable.icon_historial);

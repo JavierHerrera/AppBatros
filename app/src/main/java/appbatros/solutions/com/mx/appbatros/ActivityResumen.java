@@ -499,8 +499,8 @@ public class ActivityResumen extends AppCompatActivity  {
     }
 
     public void goHome() {
-
         Intent intent = new Intent(this, ActivityMain.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

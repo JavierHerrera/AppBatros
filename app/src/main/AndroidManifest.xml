@@ -26,23 +26,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivitySplashScreen">
+        <activity android:name=".ActivitySplashScreen"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityHorarios" />
-        <activity android:name=".ActivityCamion"/>
-        <activity android:name=".ActivityResumen" />
+        <activity android:name=".ActivityHorarios"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ActivityCamion"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ActivityResumen"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ActivityMetodoPago"
-            android:launchMode="singleInstance"/>
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ActivityAgregarTarjeta" />
-        <activity android:name=".ActivityMain" />
-        <activity android:name=".ActivityHistorial" />
-        <activity android:name=".ActivityRegsistrarConektaID" />
-        <activity android:name=".ActivityOxxo"></activity>
+        <activity android:name=".ActivityMain"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ActivityHistorial"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ActivityRegsistrarConektaID"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ActivityOxxo"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
