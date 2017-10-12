@@ -32,7 +32,6 @@ public class ActivityHistorial extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
 
-
         //Si recibe un pago tipo oxxo, toma la referencia y muestra un mensaje
         boolean pagoOxxo = false;
         try {
@@ -42,8 +41,6 @@ public class ActivityHistorial extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         cargarActionBar();
 
         //Iniciar el adaptador y recycle

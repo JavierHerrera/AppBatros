@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,7 +33,9 @@ import java.util.Objects;
 
 import appbatros.solutions.com.mx.appbatros.adapters.AdapterHorarios;
 import appbatros.solutions.com.mx.appbatros.extras.FormatoHorasFechas;
+import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
 import appbatros.solutions.com.mx.appbatros.interfaces.MyInterfaceActivityHorarios;
+import appbatros.solutions.com.mx.appbatros.objetos.ListaViajes;
 import appbatros.solutions.com.mx.appbatros.objetos.Pasajero;
 import appbatros.solutions.com.mx.appbatros.objetos.Salidas;
 import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
@@ -50,10 +53,23 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
     //Dialogo de spinner
     Dialog dialogSpinner;
 
+    Viaje viaje;
+
+    Boolean viajeIda = true;
+    Boolean redondo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horarios);
+
+        //Inicializar viaje de regreso
+        ListaViajes.viajeRegreso.salidas.setCorrida(null);
+
+        if (ListaViajes.viajeIda.getCorrida() != null){viajeIda = false;}
+        redondo = ListaViajes.viajeIda.redondo;
+
+        viaje = verificarViajeActual();
 
         crearDialogoSpinner();
         mostrarSpinerBar();
@@ -95,9 +111,16 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
         LayoutInflater mInflater = LayoutInflater.from(this);
 
         View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text_titulo);
+        TextView mTitleTextView = mCustomView.findViewById(R.id.title_text_titulo);
 
-        mTitleTextView.setText("Horarios");
+        if (redondo){
+            if (viajeIda){
+                mTitleTextView.setText("Viaje Ida");
+            }else{mTitleTextView.setText("Viaje Regreso");}
+
+        }else{
+            mTitleTextView.setText("Horarios");
+        }
 
         ImageView backButton = mCustomView.findViewById(R.id.imageView_Back);
         backButton.setImageResource(R.drawable.icon_back);
@@ -122,8 +145,7 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
 
 // prepare the Request
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
-                {
+                new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
@@ -133,30 +155,40 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
                             JSONArray jsonArrayCorridas = response.getJSONArray("corridas");
                             JSONArray jsonArrayTarifas = response.getJSONArray("tarifas");
 
-                            //Obtener Precios de tarigas Express y Normal
-                            for (int i = 0; i < jsonArrayTarifas.length(); i++) {
+                            if (jsonArrayCorridas.length() == 0) {
 
-                                if (i==0) {
-                                    String tarifa = jsonArrayTarifas.getJSONObject(i).getString("tarifa");
-                                    tarifaAdulto = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("normal"));
-                                    tarifaExtudiante = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("estudiante"));
-                                    tarifaInsen = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("insen"));
-                                    tarifaMenor = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("menores"));
+                                Intent intent = new Intent(ActivityHorarios.this, ActivityMain.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                SingleToast.show(ActivityHorarios.this, "Ya no hay viajes disponibles para ese horario", Toast.LENGTH_LONG);
 
-                                    mostrarTarigaNormalTotal();
-                                }else{
+                            } else {
 
-                                    String tarifa = jsonArrayTarifas.getJSONObject(i).getString("tarifa");
-                                    tarifaExpressAdulto = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("normal"));
-                                    tarifaExpressExtudiante = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("estudiante"));
-                                    tarifaExpressInsen = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("insen"));
-                                    tarifaExpressMenor = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("menores"));
+                                //Obtener Precios de tarigas Express y Normal
+                                for (int i = 0; i < jsonArrayTarifas.length(); i++) {
 
-                                    mostrarTarifaExpressTotal();
+                                    if (i == 0) {
+                                        String tarifa = jsonArrayTarifas.getJSONObject(i).getString("tarifa");
+                                        tarifaAdulto = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("normal"));
+                                        tarifaExtudiante = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("estudiante"));
+                                        tarifaInsen = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("insen"));
+                                        tarifaMenor = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("menores"));
+
+                                        mostrarTarigaNormalTotal();
+                                    } else {
+
+                                        String tarifa = jsonArrayTarifas.getJSONObject(i).getString("tarifa");
+                                        tarifaExpressAdulto = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("normal"));
+                                        tarifaExpressExtudiante = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("estudiante"));
+                                        tarifaExpressInsen = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("insen"));
+                                        tarifaExpressMenor = Integer.parseInt(jsonArrayTarifas.getJSONObject(i).getString("menores"));
+
+                                        mostrarTarifaExpressTotal();
+                                    }
                                 }
                             }
 
-                            //Datos de viaje
+                            //Datos de verificarViajeActual
 
                             for (int i = 0; i < jsonArrayCorridas.length(); i++) {
 
@@ -180,7 +212,7 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
 
                                 //Revisar si es express o normal
                                 if (Objects.equals(tipo, "V")){
-                                    tipo = "Express";
+                                    tipo = "Expreso";
                                     importe = String.valueOf(tarifaExpressTotal);
                                 }else{
                                     tipo = "Normal";
@@ -218,12 +250,12 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
        //"http://198.199.102.31:3000/api/buses/0150/HMO/OBR/2017-09-14";
         FormatoHorasFechas formatoHorasFechas = new FormatoHorasFechas();
             String TEST= "http://198.199.102.31:4000/api/buses/"+
-                    formatoHorasFechas.validarHora()+"/"+
-                    Viaje.getOrigenSiglas()+"/"+
-                    Viaje.getDestinoSiglas()+"/"+
-                    Viaje.getFechaSalidaYear()+"-"+
-                    Viaje.getFechaSalidaMes()+"-"+
-                    Viaje.getFechaSalidaDiaNumero();
+                    formatoHorasFechas.validarHora(viaje)+"/"+
+                    viaje.getOrigenSiglas()+"/"+
+                    viaje.getDestinoSiglas()+"/"+
+                    viaje.getFechaSalidaYear()+"-"+
+                    viaje.getFechaSalidaMes()+"-"+
+                    viaje.getFechaSalidaDiaNumero();
 
         Log.d("Log:", ""+TEST);
 
@@ -233,21 +265,17 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
     @Override
     public void adapterHorarios(Salidas salidas) {
         setDatosdeViaje(salidas);
-
         mostrarDialogo(salidas);
     }
 
     private void setDatosdeViaje(Salidas salida){
 
-        Viaje.setHoraSalida(salida.getHorarioSalidaMilitar());
-        Viaje.setCorrida(salida.getCorrida());
+        viaje.setHoraSalida(salida.getHorarioSalidaMilitar());
+        viaje.setCorrida(salida.getCorrida());
         if(Objects.equals(salida.getTipoCamion(), "Normal")){
             sacarTarifaNormal();
         }else {
             sacarTarifaExpress();}
-
-
-
     }
 
     public void cargarCabecera(){
@@ -259,22 +287,22 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
         dia = (TextView) findViewById(R.id.textView_diaHorarios);
         mes = (TextView) findViewById(R.id.textView_mesHorarios);
 
-        origen.setText(Viaje.getOrigen());
-        destino.setText(Viaje.getDestino());
-        dia.setText(Viaje.getFechaSalidaDiaNumero());
-        mes.setText(Viaje.getFechaSalidaMesNombre());
+        origen.setText(viaje.getOrigen());
+        destino.setText(viaje.getDestino());
+        dia.setText(viaje.getFechaSalidaDiaNumero());
+        mes.setText(viaje.getFechaSalidaMesNombre());
     }
 
     public void sacarTarifaExpress(){
 
-        for (int i = 1; i <=Viaje.getTotalPasajeros() ; i++) {
-            agregarImportePasajeros(Viaje.pasajeroArrayList.get(i),tarifaExpressAdulto,tarifaExpressExtudiante,tarifaExpressInsen,tarifaExpressMenor);
+        for (int i = 1; i <= viaje.getTotalPasajeros() ; i++) {
+            agregarImportePasajeros(viaje.pasajeroArrayList.get(i),tarifaExpressAdulto,tarifaExpressExtudiante,tarifaExpressInsen,tarifaExpressMenor);
         }
     }
 
     public void sacarTarifaNormal(){
-        for (int i = 1; i <=Viaje.getTotalPasajeros() ; i++) {
-            agregarImportePasajeros(Viaje.pasajeroArrayList.get(i),tarifaAdulto,tarifaExtudiante,tarifaInsen,tarifaMenor);
+        for (int i = 1; i <= viaje.getTotalPasajeros() ; i++) {
+            agregarImportePasajeros(viaje.pasajeroArrayList.get(i),tarifaAdulto,tarifaExtudiante,tarifaInsen,tarifaMenor);
         }
     }
 
@@ -289,18 +317,18 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
 
     public void mostrarTarigaNormalTotal(){
         tarifaNormalTotal =
-                tarifaAdulto * Viaje.getTotalAdultos() +
-                tarifaExtudiante * Viaje.getTotalEstudiantes() +
-                tarifaMenor * Viaje.getTotalMenores() +
-                tarifaInsen * Viaje.getTotalInsen();
+                tarifaAdulto * viaje.getTotalAdultos() +
+                tarifaExtudiante * viaje.getTotalEstudiantes() +
+                tarifaMenor * viaje.getTotalMenores() +
+                tarifaInsen * viaje.getTotalInsen();
     }
 
     public void mostrarTarifaExpressTotal(){
         tarifaExpressTotal =
-                tarifaExpressAdulto * Viaje.getTotalAdultos() +
-                tarifaExpressExtudiante * Viaje.getTotalEstudiantes() +
-                tarifaExpressMenor * Viaje.getTotalMenores() +
-                tarifaExpressInsen * Viaje.getTotalInsen();
+                tarifaExpressAdulto * viaje.getTotalAdultos() +
+                tarifaExpressExtudiante * viaje.getTotalEstudiantes() +
+                tarifaExpressMenor * viaje.getTotalMenores() +
+                tarifaExpressInsen * viaje.getTotalInsen();
     }
 
     private void mostrarDialogo(final Salidas salidas) {
@@ -317,10 +345,10 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
         Button cancelar = dialogMain.findViewById(R.id.btn_cancelar_dialogoInformativo);
 
         TextView texto= dialogMain.findViewById(R.id.tv_texto_dialogoInformativo);
-        texto.setText("Elegiste un viaje de "+Viaje.getOrigen()+
-                " a "+Viaje.getDestino()+
-                " para el dia "+Viaje.getFechaDiaSemana()+" "+Viaje.getFechaSalidaDiaNumero()+" a las "
-                +Viaje.getHoraSalidaFormato12()+", ¿Es correcto?");
+        texto.setText("Elegiste un viaje de "+ viaje.getOrigen()+
+                " a "+ viaje.getDestino()+
+                " para el dia "+ viaje.getFechaDiaSemana()+" "+ viaje.getFechaSalidaDiaNumero()+" a las "
+                + viaje.getHoraSalidaFormato12()+", ¿Es correcto?");
 
         cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -333,15 +361,38 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(ActivityHorarios.this,ActivityCamion.class);
-                intent.putExtra("Ocupados", salidas.getAsientosOcupados());
-                startActivity(intent);
-
+                gotoCamionActivity(salidas);
                 dialogMain.dismiss();
-
             }
         });
         dialogMain.show();
+    }
+
+    private void gotoCamionActivity(Salidas salidas){
+
+        //Si verificarViajeActual redondo es falso se pasa a la siguiente activity
+        if (!redondo) {
+
+            Intent intent = new Intent(ActivityHorarios.this, ActivityCamion.class);
+            ListaViajes.viajeIda = viaje;
+            ListaViajes.viajeIda.salidas = salidas;
+            startActivity(intent);
+
+            //Si verificarViajeActual redondo es true y el importe del primer pasajero de ViajeRegreso es 0
+        }else if (redondo && ListaViajes.viajeIda.salidas.getCorrida() == null ){
+
+            Intent intent = new Intent(ActivityHorarios.this, ActivityHorarios.class);
+            ListaViajes.viajeIda = viaje;
+            ListaViajes.viajeIda.salidas = salidas;
+            startActivity(intent);
+
+        }else {
+
+            Intent intent = new Intent(ActivityHorarios.this, ActivityCamion.class);
+            ListaViajes.viajeRegreso = viaje;
+            ListaViajes.viajeRegreso.salidas = salidas;
+            startActivity(intent);
+        }
     }
 
     private void crearDialogoSpinner() {
@@ -356,13 +407,33 @@ public class ActivityHorarios extends AppCompatActivity implements MyInterfaceAc
     private void mostrarSpinerBar(){
         dialogSpinner.show();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-
     }
 
-    private void quitarSpinnerBar(){
+    private void quitarSpinnerBar() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         dialogSpinner.cancel();
     }
 
+    //Devuelve el verificarViajeActual correspondiente a la situacion
+    private Viaje verificarViajeActual() {
+
+       if (redondo && ListaViajes.viajeIda.getCorrida() != null  ){
+          return ListaViajes.viajeRegreso;
+        }
+        return ListaViajes.viajeIda;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        ListaViajes.viajeIda.salidas.setCorrida(null);
+
+        if (viajeIda) {
+            Intent intent = new Intent(this, ActivityMain.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

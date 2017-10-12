@@ -1,0 +1,12 @@
+{
+  "corridas": [],
+  "tarifas": [
+    {
+      "tarifa": "HMO-NOG",
+      "normal": 215,
+      "estudiante": 161,
+      "insen": 129,
+      "menores": 129
+    }
+  ]
+}

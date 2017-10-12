@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class HistorialDB {
 
@@ -68,23 +67,18 @@ public class HistorialDB {
 
         ContentValues cv = new ContentValues();
         cv.put("tipoPago",tipoPago);
-        cv.put("status"," ");//These Fields should be your String values of actual column names
-
-        Log.d("Numero de boleto", ""+numeroBoleto+" ");
+        cv.put("status"," ");
 
         database.update(PAS_TABLE, cv, "referencia = "+ numeroBoleto, null );
         //myDB.update(TableName, cv, "_id="+id, null);
     }
 
-    public  void actualizarPagoOxxo(String referencia, String tipoPago, String oxxoRef){
+    public  void actualizarPagoOxxo(String numeroBoleto, String tipoPago, String oxxoRef){
 
         ContentValues cv = new ContentValues();
-        cv.put("tipoPago",tipoPago);
-        cv.put("status"," Referencia "+oxxoRef);//These Fields should be your String values of actual column names
+        cv.put("tipoPago",tipoPago + " Referencia "+oxxoRef);
 
-        Log.d("Numero de boleto", ""+referencia+" ");
-
-        database.update(PAS_TABLE, cv, "referencia = "+ referencia, null );
+        database.update(PAS_TABLE, cv, "referencia = "+ numeroBoleto, null );
         //myDB.update(TableName, cv, "_id="+id, null);
     }
 

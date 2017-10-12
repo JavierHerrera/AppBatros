@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 import appbatros.solutions.com.mx.appbatros.DB.ConektaDB;
 import appbatros.solutions.com.mx.appbatros.DB.HistorialDB;
 import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
+import appbatros.solutions.com.mx.appbatros.objetos.ListaViajes;
 import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
 import io.conekta.conektasdk.Card;
 import io.conekta.conektasdk.Conekta;
@@ -51,8 +52,8 @@ import io.conekta.conektasdk.Token;
 
 public class ActivityAgregarTarjeta extends AppCompatActivity {
 
-    final String TAG = "AgregarTarjetaLog",
-            urlServidor = "http://198.199.102.31:4000/api/conekta/tarjeta";
+    final String TAG = "AgregarTarjetaLog";
+    String urlServidor;
     RequestQueue mRequestQueue, requestQueuePago, requestQueueRegistro;
     Token tokenConekta;
     EditText etTitularTarjeta, etNumeroTarjeta, etCodigoTarjeta, etMesTarjeta, etAnoTarjeta;
@@ -81,10 +82,18 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
 
     Dialog dialogSpinner;
 
+    Boolean redondo;
+
+    Boolean viajeIda = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_tarjeta);
+
+        urlServidor = getString(R.string.url_api_conekta);
+
+        redondo = ListaViajes.viajeIda.redondo;
 
         crearDialogoSpinner();
         contador();
@@ -109,7 +118,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
         etAnoTarjeta = (EditText) findViewById(R.id.editTextFechaAnoAgregarTarjeta);
 
         //Agregar Total
-        etTotal.setText("Total: $"+ Viaje.getImporteTotal());
+        etTotal.setText("Total: $"+ ListaViajes.getImporteTotalViajes());
     }
 
     //Metodos para obetner tarjetas registradas o registrarlas
@@ -117,7 +126,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        final String url = "http://198.199.102.31:4000/api/conekta/tarjeta/" + consultarClienteIdDB();
+        final String url = urlServidor + consultarClienteIdDB();
         Log.d("Log", "" + url);
 
 // prepare the Request
@@ -278,8 +287,8 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
         mesTarjeta = String.valueOf(etMesTarjeta.getText());
         anoTarjeta = String.valueOf(etAnoTarjeta.getText());
 
-        Card card = new Card("Josue Camara", "4242424242424242", "332", "11", "2017");
-        // Card card = new Card(titularTarjeta, numeroTarjeta, codigoTarjeta, mesTarjeta, anoTarjeta);
+       // Card card = new Card("Josue Camara", "4242424242424242", "332", "11", "2017");
+         Card card = new Card(titularTarjeta, numeroTarjeta, codigoTarjeta, mesTarjeta, anoTarjeta);
         tokenConekta = new Token(activity);
 
         tokenConekta.onCreateTokenListener(new Token.CreateToken() {
@@ -374,8 +383,8 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
                                 if (jsonObject.getInt("status") == 1){
                                     Log.d(TAG, "Status OK");
 
-                                    quitarSpinnerBar();
-                                    actualziarPagos();
+                                    mandarPOSTdePagoAprovado(ListaViajes.viajeIda, 1);
+
 
                                 } else {
                                     Log.e(TAG, "Status error!!!");
@@ -408,50 +417,46 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
                 params.put("conektaid",clienteID );
-                params.put("monto", ""+Viaje.getImporteTotal());  //importe de la compra - Ejemplo 30000 para cobrar $300.00
+                params.put("monto", ""+ ListaViajes.getImporteTotalViajes()+ "00");  //importe de la compra - Ejemplo 30000 para cobrar $300.00
                 params.put("descripcion", "Boleto autobus");  //descripcion de la compra
                 params.put("cardid", tarjetaID);
-
-
- /*             Lo hardcore
-                params.put("conektaid",clienteID );
-                params.put("monto", "200" + "00");  //importe de la compra - Ejemplo 30000 para cobrar $300.00
-                params.put("descripcion", "Boleto autobus");  //descripcion de la compra
-                params.put("cardid", tarjetaID);*/
 
                 return params;
             }
         }).setRetryPolicy(new DefaultRetryPolicy(300000, 3, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)).setTag(TAG);
     }
 
-    //Metodos para actualizar BD como pagado
-    private void actualziarPagos() {
+    //NUEVO
+    private void mandarPOSTdePagoAprovado(final Viaje viaje, final int i) {
 
-        for (int i = 1; i <=Viaje.getTotalPasajeros() ; i++) {
-            aprobarPagoPasajero(Viaje.pasajeroArrayList.get(i).getReferencia(), "Tarjeta",i);
-            Log.d("Log", "Pasajero Referencia" + Viaje.pasajeroArrayList.get(i).getReferencia());
-        SingleToast.show(ActivityAgregarTarjeta.this, "Pago exitoso", Toast.LENGTH_LONG);
-        }
-    }
+        final String referencia = viaje.pasajeroArrayList.get(i).getReferencia() ;
+        final String tipoPago = "Tarjeta";
+        Log.d("Log", "Referencia para actualziar pago "+ referencia);
 
-    private void aprobarPagoPasajero(String referencia, String tipoPago, int numeroOperacion) {
-
-        mandarPOSTdePagoAprovado(referencia,tipoPago, numeroOperacion);
-
-        HistorialDB myDB = new HistorialDB(this);
-        myDB.actualizarPago(referencia , tipoPago);
-
-    }
-
-    private void mandarPOSTdePagoAprovado(final String id, final String tipoPago, int total) {
         requestQueue.add(new StringRequest(Request.Method.POST,
-                "http://198.199.102.31:4000/api/buses/boleto/update",
+                getString(R.string.url_pago_aprovado),
                 new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
                         Log.i("VOLLEY", response);
-                        goHistorial();
+
+                        HistorialDB myDB = new HistorialDB(ActivityAgregarTarjeta.this);
+                        myDB.actualizarPago(referencia , tipoPago);
+
+                        //Sal actualizar el pago dde todos los pasajeros te manda a historial
+                        if (i == viaje.getTotalPasajeros()){
+
+                            if (redondo && viajeIda){
+                                viajeIda = false;
+                                mandarPOSTdePagoAprovado(ListaViajes.viajeRegreso, 1);
+                            }else{
+                                goHistorial();
+                            }
+                        }else{
+                            int numero = i + 1;
+                            mandarPOSTdePagoAprovado(viaje, numero);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -465,11 +470,11 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
                 params.put("tipopago",tipoPago);  //tipo de pago (Tarjeta, Paypal, OxxoPay)
-                params.put("id",id);  //id del boleto que se obtiene cuando este se aparta
+                params.put("id",referencia);  //id del boleto que se obtiene cuando este se aparta
 
                 return params;
             }
-        }).setTag(TAG2);
+        }).setTag(TAG);
     }
 
     //METODOS AUXILARES
@@ -523,7 +528,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
     private void contador() {
 
         tiempo =(TextView)findViewById(R.id.tv_tiempo);
-        contador = new CountDownTimer(Viaje.getTiempo(), 1000) {                     //geriye sayma
+        contador = new CountDownTimer(ListaViajes.viajeIda.getTiempo(), 100) {                     //geriye sayma
 
             public void onTick(long millisUntilFinished) {
 
@@ -532,7 +537,7 @@ public class ActivityAgregarTarjeta extends AppCompatActivity {
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
 
-                Viaje.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
+                ListaViajes.viajeIda.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
             }
 
             public void onFinish() {

@@ -1,0 +1,28 @@
+
+{
+  "corridas": [
+    {
+      "corrida": "525",
+      "hora": "0230",
+      "express": "F",
+      "asientos": [
+        10
+      ]
+    },
+    {
+      "corrida": "522",
+      "hora": "1615",
+      "express": "F",
+      "asientos": []
+    }
+  ],
+  "tarifas": [
+    {
+      "tarifa": "HMO-NOG",
+      "normal": 215,
+      "estudiante": 161,
+      "insen": 129,
+      "menores": 129
+    }
+  ]
+}

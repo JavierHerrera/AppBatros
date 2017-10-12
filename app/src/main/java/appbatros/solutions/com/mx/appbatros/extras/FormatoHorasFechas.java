@@ -59,16 +59,16 @@ public class FormatoHorasFechas {
         return sdf.format(new Date());
     }
 
-    public String validarHora(){
+    public String validarHora(Viaje viaje){
 
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        int mYear = Integer.parseInt(Viaje.getFechaSalidaYear());
-        int mMonth = Integer.parseInt(Viaje.getFechaSalidaMes());
-        int mDay = Integer.parseInt(Viaje.getFechaSalidaDiaNumero());
+        int mYear = Integer.parseInt(viaje.getFechaSalidaYear());
+        int mMonth = Integer.parseInt(viaje.getFechaSalidaMes());
+        int mDay = Integer.parseInt(viaje.getFechaSalidaDiaNumero());
 
 
         Log.d("Log",""+year+mYear+month+mMonth+day+mDay);

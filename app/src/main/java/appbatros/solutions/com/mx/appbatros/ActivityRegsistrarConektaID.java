@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import appbatros.solutions.com.mx.appbatros.DB.ConektaDB;
 import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
-import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
+import appbatros.solutions.com.mx.appbatros.objetos.ListaViajes;
 
 public class ActivityRegsistrarConektaID extends AppCompatActivity {
 
@@ -105,7 +105,7 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
     private void mandarPOSTdePagoAprovado(final String nombre, final String correo, final String telefono) {
 
         requestQueue.add(new StringRequest(Request.Method.POST,
-                "http://198.199.102.31:4000/api/conekta/registro",
+                getString(R.string.registro_conekta),
                 new Response.Listener<String>() {
 
                     @Override
@@ -158,8 +158,8 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
                 params.put("correo", correo);                 //telefono formato 6623404256
                 params.put("telefono", telefono);               // telefono
 
-/*              Datos Hardcore
-                params.put("nombre", "nombr alguien");                 //correo del cliente
+/*              Datos hardcode
+                params.put("nombre", "nombre alguien");                 //correo del cliente
                 params.put("correo", "alguien2@gmail.com");                 //telefono formato 6623404256
                 params.put("telefono", "6623415660"); */                // telefono
 
@@ -183,7 +183,7 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
     private void contador() {
 
         tiempo =(TextView)findViewById(R.id.tv_tiempo);
-        contador = new CountDownTimer(Viaje.getTiempo(), 1000) {                     //geriye sayma
+        contador = new CountDownTimer(ListaViajes.viajeIda.getTiempo(), 100) {                     //geriye sayma
 
             public void onTick(long millisUntilFinished) {
 
@@ -192,7 +192,7 @@ public class ActivityRegsistrarConektaID extends AppCompatActivity {
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
 
-                Viaje.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
+                ListaViajes.viajeIda.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
             }
 
             public void onFinish() {

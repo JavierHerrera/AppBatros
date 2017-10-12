@@ -34,5 +34,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="referencia_oxxo">La referencia fue enviada a su correo y tambien la puede consultar en el historial de boletos.</string>
-
+    <string name="url_oxxo">http://198.199.102.31:4000/api/oxxo/cargo/</string>
+    <string name="url_pago_aprovado">http://198.199.102.31:4000/api/buses/boleto/update</string>
+    <string name="registro_conekta">http://198.199.102.31:4000/api/conekta/registro</string>
+    <string name="url_api_conekta">http://198.199.102.31:4000/api/conekta/tarjeta</string>
+    <string name="paypal_key">AbBg9nfZz-ckcpBKUNuYYQk-9dqulHtmIvejqq49Xp4YT7cnryPRbawzGXRI5FdRU3AmxYRfhPMdQIvJ</string>
 </resources>

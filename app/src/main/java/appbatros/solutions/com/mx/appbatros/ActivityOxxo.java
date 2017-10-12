@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,18 +27,20 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import appbatros.solutions.com.mx.appbatros.DB.HistorialDB;
 import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
+import appbatros.solutions.com.mx.appbatros.objetos.ListaViajes;
 import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
 
 public class ActivityOxxo extends AppCompatActivity {
 
-    final String TAG = "Referencia Oxxo",
-            urlServidor = "http://198.199.102.31:4000/api/oxxo/cargo/";
+    final String TAG = "Referencia Oxxo";
+    String urlServidor;
 
     RequestQueue requestQueue;
 
@@ -52,10 +55,18 @@ public class ActivityOxxo extends AppCompatActivity {
     //Dialogo de spinner
     Dialog dialogSpinner;
 
+    Boolean redondo;
+    Boolean viajeIda = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oxxo);
+
+        redondo = ListaViajes.viajeIda.redondo;
+
+        //Iniciaqr url
+        urlServidor = getString(R.string.url_oxxo);
 
         crearDialogoSpinner();
         //Iniciar requestQueue
@@ -97,12 +108,58 @@ public class ActivityOxxo extends AppCompatActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
     }
 
-    public void gerenrarReferenccia(View view) {
+    public void validarCampos(View view) {
+
+        if (nombre.getText().length() == 0){
+            SingleToast.show(ActivityOxxo.this,"Ingrese el nombre",Toast.LENGTH_SHORT);
+
+        }else if (correo.getText().length() == 0){
+            SingleToast.show(ActivityOxxo.this,"Ingrese el correo",Toast.LENGTH_SHORT);
+
+        }else if (telefono.getText().length() == 0){
+            SingleToast.show(ActivityOxxo.this,"Ingrese el telefono",Toast.LENGTH_SHORT);
+        }else{
+            mostrarDialogo();
+        }
+    }
+
+    private void mostrarDialogo() {
+
+        final Dialog dialogMain;
+
+        dialogMain = new Dialog(ActivityOxxo.this);
+        dialogMain.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogMain.setContentView(R.layout.dialogo_informativo);
+
+        Button aceptar = dialogMain.findViewById(R.id.btn_aceptar_dialogoInformativo);
+        Button cancelar = dialogMain.findViewById(R.id.btn_cancelar_dialogoInformativo);
+
+        TextView texto= dialogMain.findViewById(R.id.tv_texto_dialogoInformativo);
+        texto.setText("Se va a enviar un correo a "+ correo.getText() +" ¿Es correcto?");
+
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMain.dismiss();
+            }
+        });
+
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gerenrarReferencia();
+                dialogMain.dismiss();
+            }
+        });
+        dialogMain.show();
+    }
+
+    public void gerenrarReferencia() {
 
         mostarSpinnerBar();
 
         requestQueue.add(new StringRequest(Request.Method.POST,
-                "http://198.199.102.31:4000/api/oxxo/cargo/",
+                urlServidor,
 
                 new Response.Listener<String>() {
 
@@ -124,8 +181,7 @@ public class ActivityOxxo extends AppCompatActivity {
                                     quitarSpinnerBar();
                                     refOxxo =(jsonObject.getJSONObject("respuesta").getString("reference"));
 
-                                    actualziarPagos();
-                                    goHistorial();
+                                    mandarPOSTdePagoAprovado(ListaViajes.viajeIda, 1);
 
                                 } else {
                                     Log.e(TAG, "Status error!!!");
@@ -157,83 +213,70 @@ public class ActivityOxxo extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
-/*               params.put("pasajero", Viaje.pasajeroArrayList.get(1).getNombre());  //d del cliente con formato cus_2hBBx84ua6qT8Hxwx
-                params.put("correo", String.valueOf(correo.getText()));  //importe de la compra - Ejemplo 30000 para cobrar $300.00
-                params.put("telefono", String.valueOf(telefono.getText()));  //descripcion de la compra
-                params.put("descripcion", "["+Viaje.pasajeroArrayList.get(1).getReferencia()+"]");  //se genera al registrar tarjeta src_2hBFq5Mk2Q6hYc7Zqparams.put("monto", Viaje.getImporteTotal()+"00");  //se genera al registrar tarjeta src_2hBFq5Mk2Q6hYc7Zq
-                params.put("monto", Viaje.getImporteTotal()+"00");  //se genera al registrar tarjeta src_2hBFq5Mk2Q6hYc7Zq*/
+                params.put("pasajero", ""+nombre.getText());
+                params.put("correo", ""+correo.getText());
+                params.put("telefono", ""+telefono.getText());
+                params.put("descripcion", ""+generarDescripcionConBoletos());
+                params.put("monto", ListaViajes.getImporteTotalViajes()+"00");
 
-
-                params.put("pasajero", ""+nombre.getText());  //d del cliente con formato cus_2hBBx84ua6qT8Hxwx
-                params.put("correo", ""+correo.getText());  //importe de la compra - Ejemplo 30000 para cobrar $300.00
-                params.put("telefono", ""+telefono.getText());  //descripcion de la compra
-                params.put("descripcion", generarDescripcionConBoletos());  //se genera al registrar tarjeta src_2hBFq5Mk2Q6hYc7Zqparams.put("monto", Viaje.getImporteTotal()+"00");  //se genera al registrar tarjeta src_2hBFq5Mk2Q6hYc7Zq
-                params.put("monto", Viaje.getImporteTotal()+"00");  //se genera al registrar tarjeta src_2hBFq5Mk2Q6hYc7Zq
-
-
-                Log.d("Log:","OXXO "+nombre.getText() + " "+ correo.getText()+ " " + telefono.getText() + " "+ Viaje.pasajeroArrayList.get(1).getReferencia());
+                Log.d("Log:","OXXO "+generarDescripcionConBoletos());
                 return params;
             }
         }).setTag(TAG);
     }
 
-    private String generarDescripcionConBoletos(){
+    private ArrayList<String> generarDescripcionConBoletos(){
 
-        switch (Viaje.getTotalPasajeros()) {
-            case 1:
-                return "[" + Viaje.pasajeroArrayList.get(1).getReferencia() + "]";
+        ArrayList<String> boletos = new ArrayList<>();
+        int total = ListaViajes.viajeIda.getTotalPasajeros();
 
-            case 2:
-                return "[" + Viaje.pasajeroArrayList.get(1).getReferencia() + "," +
-                        Viaje.pasajeroArrayList.get(2).getReferencia() + "]";
-
-            case 3:
-                return "[" + Viaje.pasajeroArrayList.get(1).getReferencia() + "," +
-                        Viaje.pasajeroArrayList.get(2).getReferencia() + "," +
-                        Viaje.pasajeroArrayList.get(3).getReferencia() + "]";
-
-            case 4:
-                return "[" +  Viaje.pasajeroArrayList.get(1).getReferencia() + "," +
-                        Viaje.pasajeroArrayList.get(2).getReferencia() + "," +
-                        Viaje.pasajeroArrayList.get(3).getReferencia() + "," +
-                        Viaje.pasajeroArrayList.get(4).getReferencia() + "]";
+        for (int i = 1; i <= total; i++) {
+           boletos.add(ListaViajes.viajeIda.pasajeroArrayList.get(i).getReferencia());
         }
-        return "[" + Viaje.pasajeroArrayList.get(1).getReferencia() + "]";
-    }
-
-    private void actualziarPagos() {
-
-        for (int i = 1; i <=Viaje.getTotalPasajeros() ; i++) {
-            aprobarPagoPasajero(Viaje.pasajeroArrayList.get(i).getReferencia(), "OxxoPay",i);
-            Log.d("Log", "Pasajero Referencia" + Viaje.pasajeroArrayList.get(i).getReferencia());
+        if (redondo) {
+            for (int i = 1; i <= total; i++) {
+                boletos.add(ListaViajes.viajeRegreso.pasajeroArrayList.get(i).getReferencia());
+            }
         }
+      return boletos;
     }
 
-    private void aprobarPagoPasajero(String referencia, String tipoPago, int numeroOperacion) {
+    private void mandarPOSTdePagoAprovado(final Viaje viaje, final int i) {
 
-        mandarPOSTdePagoAprovado(referencia,tipoPago, numeroOperacion);
+        final String numeroBoleto = viaje.pasajeroArrayList.get(i).getReferencia() ;
+        final String tipoPago = "Oxxo";
+        Log.d("Log", "Referencia para actualziar pago "+ numeroBoleto);
 
-        HistorialDB myDB = new HistorialDB(this);
-        myDB.actualizarPagoOxxo(referencia , tipoPago, refOxxo);
-
-    }
-
-    private void mandarPOSTdePagoAprovado(final String id, final String tipoPago, int total) {
         requestQueue.add(new StringRequest(Request.Method.POST,
-                "http://198.199.102.31:4000/api/buses/boleto/update",
+                getString(R.string.url_pago_aprovado),
                 new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
                         Log.i("VOLLEY", response);
-                        quitarSpinnerBar();
+
+                        HistorialDB myDB = new HistorialDB(ActivityOxxo.this);
+                        myDB.actualizarPagoOxxo(numeroBoleto , tipoPago, refOxxo);
+
+                        //Sal actualizar el pago dde todos los pasajeros y te manda a historial
+                        if (i == viaje.getTotalPasajeros()){
+
+                            if (redondo && viajeIda){
+                                viajeIda = false;
+                                mandarPOSTdePagoAprovado(ListaViajes.viajeRegreso, 1);
+                            }else{
+                                goHistorial();
+                            }
+                        }else{
+                            int numero = i + 1;
+                            mandarPOSTdePagoAprovado(viaje, numero);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("VOLLEY", error.toString());
-                        quitarSpinnerBar();
                     }
                 }) {
             @Override
@@ -241,7 +284,7 @@ public class ActivityOxxo extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
                 params.put("tipopago",tipoPago);  //tipo de pago (Tarjeta, Paypal, OxxoPay)
-                params.put("id",id);  //id del boleto que se obtiene cuando este se aparta
+                params.put("id",numeroBoleto);  //id del boleto que se obtiene cuando este se aparta
 
                 return params;
             }
@@ -252,16 +295,13 @@ public class ActivityOxxo extends AppCompatActivity {
 
         contador.cancel();
         Intent intent = new Intent(ActivityOxxo.this,ActivityHistorial.class);
-        intent.putExtra("PagoOxxo",true);
-        intent.putExtra("ReferenciaOxxo",refOxxo);
-
         startActivity(intent);
     }
 
     private void contador() {
 
         tiempo =(TextView)findViewById(R.id.tv_tiempo);
-        contador = new CountDownTimer(Viaje.getTiempo(), 1000) {                     //geriye sayma
+        contador = new CountDownTimer(ListaViajes.viajeIda.getTiempo(), 100) {                     //geriye sayma
 
             public void onTick(long millisUntilFinished) {
 
@@ -270,7 +310,7 @@ public class ActivityOxxo extends AppCompatActivity {
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
 
-                Viaje.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
+                ListaViajes.viajeIda.setTiempo(TimeUnit.MILLISECONDS.toMillis(millisUntilFinished));
             }
 
             public void onFinish() {

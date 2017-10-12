@@ -71,33 +71,132 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:gravity="center_vertical"
         style="@style/layoutMain"
-        android:elevation="1dp">
+        android:gravity="center_vertical"
+        android:elevation="1dp"
+        android:visibility="visible">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Fecha de Salida"
-                style="@style/textoNegroFondoClaro"
-                android:layout_weight="1"/>
+        />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tipo de Viaje"
+            style="@style/textoNegroFondoClaro"/>
+
+        <Button
+            android:onClick="ViajeSencillo"
+            android:id="@+id/btn_sencillo_activo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sencillo"
+            android:visibility="visible"
+            style="@style/botonActivo"
+            android:textColor="@color/blanco"/>
+
+        <Button
+            android:onClick="ViajeSencillo"
+            android:id="@+id/btn_sencillo_inactivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sencillo"
+            android:visibility="gone"
+            style="@style/botonInctivoGrisOscuro"
+            android:textColor="@color/blanco"/>
+
+        <Button
+            android:onClick="ViajeRedondo"
+            android:id="@+id/btn_redondo_inactivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/botonInctivoGrisOscuro"
+            android:visibility="visible"
+            android:text="Redondo"
+            android:textColor="@color/blanco"/>
+
+        <Button
+            android:onClick="ViajeRedondo"
+            android:id="@+id/btn_redondo_activo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/botonActivo"
+            android:visibility="gone"
+            android:text="Redondo"
+            android:textColor="@color/blanco"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            style="@style/layoutCustom"
+            android:paddingEnd="0dp"
+            android:elevation="1dp">
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/in_date"
-                android:hint="Eliga una fecha"
+                android:id="@+id/et_fechaSalida_main"
+                android:hint="Salida"
                 android:focusable="false"/>
 
             <Button
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:id="@+id/btn_date"
+                android:id="@+id/btn_calendarioSalida_main"
                 android:background="@drawable/fecha"
                 android:layout_margin="10dp"
-               />
+                />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ly_viajeRegreso_main"
+            style="@style/layoutCustom"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:elevation="1dp"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <EditText
+                android:id="@+id/et_fechaRegreso_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Regreso" />
+
+            <Button
+                android:id="@+id/btn_calendarioRegresoInactivo_main"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/fecha_inactiva"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/btn_calendarioRegresoActivo_main"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                android:background="@drawable/fecha" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:onClick="seleccionarPasajeros"
@@ -212,19 +311,19 @@
             android:layout_alignParentBottom="true"
             android:visibility="gone"
             />
-        <Button
-            android:onClick="goHorariosActivity"
-            android:id="@+id/button_buscarActivo_main"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="BUSCAR"
-            android:textSize="22dp"
-            style="@style/botonActivo"
-            android:layout_alignParentBottom="true"
-            android:visibility="visible"
-            />
 
     </RelativeLayout>
+
+    <Button
+        android:onClick="goHorariosActivity"
+        android:id="@+id/button_buscarActivo_main"
+        style="@style/botonActivo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="BUSCAR"
+        android:textSize="22dp"
+        android:visibility="visible" />
 
 
 </LinearLayout>

@@ -78,7 +78,8 @@
             android:text="Cancelar"
             android:background="#00fffefe"
             android:textColor="#147BCA"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/botonAceptarDialogoOxxo"

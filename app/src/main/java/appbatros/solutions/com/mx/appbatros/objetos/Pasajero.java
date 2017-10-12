@@ -20,6 +20,15 @@ public  class Pasajero {
         referencia = "0";
     }
 
+    public Pasajero(Pasajero pasajero){
+        tipo = pasajero.getTipo();
+        icono = pasajero.getIcono();
+        icon_seleccionado = pasajero.getIcon_seleccionado();
+        importe = pasajero.getImporte();
+        nombre = pasajero.getNombre();
+        referencia = pasajero.getReferencia();
+    }
+
     public String getTipo() {
         return tipo;
     }

@@ -8,16 +8,22 @@ import appbatros.solutions.com.mx.appbatros.extras.FormatoHorasFechas;
 
 public class Viaje {
 
-   // public static Pasajero pasajero1,pasajero2,pasajero3,pasajero4;
-    private static String origen,destino;
-    private static String horaSalida,  fechaSalidaDia, fechaSalidaMes, fechaSalidaYear, fechaDiaSemana;
-    private static String corrida;
-    private static String idBoleto;
-    private static int totalPasajeros;
-    public static ArrayList<Pasajero> pasajeroArrayList = new ArrayList<>(4);
-    private static long tiempo = 300000;
+   // public  Pasajero pasajero1,pasajero2,pasajero3,pasajero4;
+    private  String origen,destino;
+    private  String horaSalida,  fechaSalidaDia, fechaSalidaMes, fechaSalidaYear, fechaDiaSemana;
+    private  String corrida;
+    private  String idBoleto;
+    private  int totalPasajeros;
+    public  ArrayList<Pasajero> pasajeroArrayList = new ArrayList<>(4);
+    private  long tiempo = 300000;
+    public  boolean redondo = false;
+    public  Salidas salidas;
 
-    public static int getTotalAdultos(){
+
+    public Viaje (){}
+
+
+    public  int getTotalAdultos(){
         int total= 0;
         for (int i = 1; i <=totalPasajeros ; i++) {
             if(Objects.equals(pasajeroArrayList.get(i).getTipo(), "adulto")){ total = total + 1;}
@@ -25,7 +31,7 @@ public class Viaje {
         return total;
     }
 
-    public static int getTotalEstudiantes(){
+    public  int getTotalEstudiantes(){
         int total= 0;
         for (int i = 1; i <=totalPasajeros ; i++) {
             if(Objects.equals(pasajeroArrayList.get(i).getTipo(), "estudiante")){ total = total + 1;}
@@ -33,7 +39,7 @@ public class Viaje {
         return total;
     }
 
-    public static int getTotalMenores(){
+    public  int getTotalMenores(){
         int total= 0;
         for (int i = 1; i <=totalPasajeros ; i++) {
             if(Objects.equals(pasajeroArrayList.get(i).getTipo(), "nino")){ total = total + 1;}
@@ -41,7 +47,7 @@ public class Viaje {
         return total;
     }
 
-    public static int getTotalInsen(){
+    public  int getTotalInsen(){
         int total= 0;
         for (int i = 1; i <=totalPasajeros ; i++) {
             if(Objects.equals(pasajeroArrayList.get(i).getTipo(), "insen")){ total = total + 1;}
@@ -49,11 +55,11 @@ public class Viaje {
         return total;
     }
 
-    public static String getOrigen() {
+    public  String getOrigen() {
         return origen;
     }
 
-    public static String getOrigenSiglas() {
+    public  String getOrigenSiglas() {
 
         String siglas[] = {"HMO","CAB","PPE","NOG","SAN","MAG","LAY","HUA","ETC","NAV","ALA","OBR","GUA","EMP"};
         String descripcion[] = {"HERMOSILLO","CABORCA","PUERTO PEÑASCO","NOGALES", "SANTANA",
@@ -68,7 +74,7 @@ public class Viaje {
         return siglas[i];
     }
 
-    public static String getDestinoSiglas() {
+    public  String getDestinoSiglas() {
 
         String siglas[] = {"HMO","CAB","PPE","NOG","SAN","MAG","LAY","HUA","ETC","NAV","ALA","OBR","GUA","EMP"};
         String descripcion[] = {"HERMOSILLO","CABORCA","PUERTO PEÑASCO","NOGALES", "SANTANA",
@@ -83,31 +89,31 @@ public class Viaje {
         return siglas[i];
     }
 
-    public static void setOrigen(String origen) {
-        Viaje.origen = origen;
+    public  void setOrigen(String origen) {
+        this.origen = origen;
     }
 
-    public static String getDestino() {
+    public  String getDestino() {
         return destino;
     }
 
-    public static void setDestino(String destino) {
-        Viaje.destino = destino;
+    public  void setDestino(String destino) {
+        this.destino = destino;
     }
 
-    public static String getFechaSalidaDiaNumero() {
+    public  String getFechaSalidaDiaNumero() {
         return fechaSalidaDia;
     }
 
-    public static void setFechaSalidaDia(String fechaSalidaD) {
-        Viaje.fechaSalidaDia = fechaSalidaD;
+    public  void setFechaSalidaDia(String fechaSalidaD) {
+        this.fechaSalidaDia = fechaSalidaD;
     }
 
-    public static String getFechaDiaSemana() {
+    public  String getFechaDiaSemana() {
         return fechaDiaSemana;
     }
 
-    public static void setFechaDiaSemana(String fechaDiaSemana) {
+    public  void setFechaDiaSemana(String fechaDiaSemana) {
         FormatoHorasFechas fh = new FormatoHorasFechas();
 
         String dia =  fh.sacarDiaSemana(
@@ -115,14 +121,14 @@ public class Viaje {
                    Integer.parseInt(getFechaSalidaMes()),
                    Integer.parseInt(getFechaSalidaDiaNumero()));
 
-        Viaje.fechaDiaSemana = dia.substring(0,1).toUpperCase() + dia.substring(1);
+        this.fechaDiaSemana = dia.substring(0,1).toUpperCase() + dia.substring(1);
     }
 
-    public static String getFechaSalidaMes() {
+    public  String getFechaSalidaMes() {
         return fechaSalidaMes;
     }
 
-    public static String getFechaSalidaMesNombre() {
+    public  String getFechaSalidaMesNombre() {
         int mes = Integer.parseInt(fechaSalidaMes) - 1;
         String month = "wrong";
         DateFormatSymbols dfs = new DateFormatSymbols();
@@ -133,68 +139,68 @@ public class Viaje {
         return month;
     }
 
-    public static void setFechaSalidaMes(String fechaSalidaM) {
-        Viaje.fechaSalidaMes = fechaSalidaM;
+    public  void setFechaSalidaMes(String fechaSalidaM) {
+        this.fechaSalidaMes = fechaSalidaM;
     }
 
-    public static String getFechaSalidaYear() {
+    public  String getFechaSalidaYear() {
         return fechaSalidaYear;
     }
 
-    public static void setFechaSalidaYear(String fechaSalidaYear) {
-        Viaje.fechaSalidaYear = fechaSalidaYear;
+    public  void setFechaSalidaYear(String fechaSalidaYear) {
+        this.fechaSalidaYear = fechaSalidaYear;
     }
 
-    public static String getHoraSalidaFormato24Militar() {
+    public  String getHoraSalidaFormato24Militar() {
         return horaSalida;
     }
 
-    public static String getHoraSalidaFormato12() {
+    public  String getHoraSalidaFormato12() {
         //Se cambia formato de horas
         FormatoHorasFechas formato = new FormatoHorasFechas();
         return formato.dosDigitosyAM_PM(getHoraSalidaFormato24Militar());
 
     }
 
-    public static void setHoraSalida(String horaSalida) {
-        Viaje.horaSalida = horaSalida;
+    public  void setHoraSalida(String horaSalida) {
+        this.horaSalida = horaSalida;
     }
 
-    public static int getTotalPasajeros() {
+    public  int getTotalPasajeros() {
         return totalPasajeros;
     }
 
-    public static void setTotalPasajeros(int totalPasajeros) {
-        Viaje.totalPasajeros = totalPasajeros;
+    public  void setTotalPasajeros(int totalPasajeros) {
+        this.totalPasajeros = totalPasajeros;
     }
 
-    public static int getImporteTotal() {
+    public  int getImporteTotal() {
 
         return pasajeroArrayList.get(1).getImporte() + pasajeroArrayList.get(2).getImporte() +
                 pasajeroArrayList.get(3).getImporte() + pasajeroArrayList.get(4).getImporte();
     }
 
-    public static String getCorrida() {
+    public  String getCorrida() {
         return corrida;
     }
 
-    public static void setCorrida(String corrida) {
-        Viaje.corrida = corrida;
+    public  void setCorrida(String corrida) {
+        this.corrida = corrida;
     }
 
-    public static String getIdBoleto() {
+    public  String getIdBoleto() {
         return idBoleto;
     }
 
-    public static void setIdBoleto(String idBoleto) {
-        Viaje.idBoleto = idBoleto;
+    public  void setIdBoleto(String idBoleto) {
+        this.idBoleto = idBoleto;
     }
 
-    public static long getTiempo() {
+    public  long getTiempo() {
         return tiempo;
     }
 
-    public static void setTiempo(long tiempo) {
-        Viaje.tiempo = tiempo;
+    public  void setTiempo(long tiempo) {
+        this.tiempo = tiempo;
     }
 }

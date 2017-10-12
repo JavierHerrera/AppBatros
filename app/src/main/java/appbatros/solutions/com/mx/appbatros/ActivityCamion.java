@@ -34,6 +34,7 @@ import appbatros.solutions.com.mx.appbatros.adapters.AdapterAsiento;
 import appbatros.solutions.com.mx.appbatros.extras.SingleToast;
 import appbatros.solutions.com.mx.appbatros.interfaces.MyInterfaceActivityCamion;
 import appbatros.solutions.com.mx.appbatros.objetos.Asiento;
+import appbatros.solutions.com.mx.appbatros.objetos.ListaViajes;
 import appbatros.solutions.com.mx.appbatros.objetos.Pasajero;
 import appbatros.solutions.com.mx.appbatros.objetos.Viaje;
 
@@ -45,6 +46,8 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
     AdapterAsiento adapter1;
     AdapterAsiento adapter2;
+
+    Viaje viajeActual;
 
     //Lista de asientos ocupados
     ArrayList<String> ocupados;
@@ -72,13 +75,28 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
     //Boton para ir a la siguietne activity
     Button botonContinuar;
+
+    Boolean redondo;
+    Boolean viajeIda = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camion);
 
-        Intent parentIntent = getIntent();
-        ocupados = parentIntent.getStringArrayListExtra("Ocupados");
+        redondo = ListaViajes.viajeIda.redondo;
+        viajeIda = ListaViajes.viajeIda.pasajeroArrayList.get(1).getNumero_asiento() == 0;
+
+
+        if (redondo){
+            ListaViajes.viajeRegreso.pasajeroArrayList.get(1).setNumero_asiento(0);
+        }
+
+
+        //Se carga el viaje acutal Ida o Regreso
+        viajeActual = viajeActual();
+
+        ocupados = viajeActual.salidas.getAsientosOcupados();
 
         cargarActionBar();
         cargarCabecera();
@@ -144,13 +162,19 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
         View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text_titulo);
 
-        if (Viaje.getTotalPasajeros() == 1) {
-            mTitleTextView.setText("Seleccione asiento");
+
+        if(!redondo) {
+            if (viajeActual.getTotalPasajeros() == 1) {
+                mTitleTextView.setText("Seleccione asiento");
+            } else {
+                mTitleTextView.setText("Seleccione asientos");
+            }
+        }else if (viajeIda){
+            mTitleTextView.setText("Viaje de ida");
         }else{
-            mTitleTextView.setText("Seleccione asientos");
+            mTitleTextView.setText("Viaje de regreso");
         }
-
-
+            
         ImageView backButton = mCustomView.findViewById(R.id.imageView_Back);
         backButton.setImageResource(R.drawable.icon_back);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -186,11 +210,11 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
         dia = (TextView) findViewById(R.id.textView_diaCamion);
         mes = (TextView) findViewById(R.id.textView_mesCamion);
 
-        origen.setText(Viaje.getOrigen());
-        destino.setText(Viaje.getDestino());
-        hora.setText(Viaje.getHoraSalidaFormato12());
-        dia.setText(Viaje.getFechaSalidaDiaNumero());
-        mes.setText(Viaje.getFechaSalidaMes());
+        origen.setText(viajeActual.getOrigen());
+        destino.setText(viajeActual.getDestino());
+        hora.setText(viajeActual.getHoraSalidaFormato12());
+        dia.setText(viajeActual.getFechaSalidaDiaNumero());
+        mes.setText(viajeActual.getFechaSalidaMes());
 
     }
 
@@ -201,10 +225,10 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
     private void clickAsiento(final Asiento asiento, final int position) {
 
-        //Validar asiento disponible y que falten pasajeros por otmar asiento
+        //Validar asiento disponible y que falten pasajeros por tomar asiento
         if (Objects.equals(asiento.getStatus(), "disponible")) {
 
-            if (asientosElejidos < Viaje.getTotalPasajeros()) {
+            if (asientosElejidos < viajeActual.getTotalPasajeros()) {
 
                 //Abrir Dialogo
                 dialog_agregar = new Dialog(ActivityCamion.this);
@@ -236,10 +260,10 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
                 Button cancelar = dialog_agregar.findViewById(R.id.botonCancelarDialogoAsientos);
 
                 //Cargar Iconos disponibles de cada pasajero
-                cargarIconos(Viaje.pasajeroArrayList.get(1), layoutPasajero1Dialog, iconPasajero1, textViewPasajero1, seleccionado_p1);
-                cargarIconos(Viaje.pasajeroArrayList.get(2), layoutPasajero2Dialog, iconPasajero2, textViewPasajero2, seleccionado_p2);
-                cargarIconos(Viaje.pasajeroArrayList.get(3), layoutPasajero3Dialog, iconPasajero3, textViewPasajero3, seleccionado_p3);
-                cargarIconos(Viaje.pasajeroArrayList.get(4), layoutPasajero4Dialog, iconPasajero4, textViewPasajero4, seleccionado_p4);
+                cargarIconos(viajeActual.pasajeroArrayList.get(1), layoutPasajero1Dialog, iconPasajero1, textViewPasajero1, seleccionado_p1);
+                cargarIconos(viajeActual.pasajeroArrayList.get(2), layoutPasajero2Dialog, iconPasajero2, textViewPasajero2, seleccionado_p2);
+                cargarIconos(viajeActual.pasajeroArrayList.get(3), layoutPasajero3Dialog, iconPasajero3, textViewPasajero3, seleccionado_p3);
+                cargarIconos(viajeActual.pasajeroArrayList.get(4), layoutPasajero4Dialog, iconPasajero4, textViewPasajero4, seleccionado_p4);
 
                 cambiarColorIconoAzulTipoPasajeroAutomatico();
 
@@ -271,14 +295,12 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
                             cargarDatosPasajeroEnResumen(pasajero_seleccionado, asiento.getNumeroAsiento());
                             asientosElejidos = asientosElejidos + 1;
                             aparecerBotonContinuar();
-
+                            ocultarTeclado();
                             dialog_agregar.dismiss();
 
                         }else{
-                            SingleToast.show(ActivityCamion.this,"Ingrece el nombre del pasajero",Toast.LENGTH_SHORT);
-
+                            SingleToast.show(ActivityCamion.this,"Ingrese el nombre del pasajero",Toast.LENGTH_SHORT);
                         }
-
                     }
                 });
             }else {
@@ -319,7 +341,6 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
                     //Cambiar color a de asiento(verde)
                     borrarAsiento(asiento, asiento.getNumeroAsiento(),position);
 
-
                     dialog_eliminar.dismiss();
                 }
             });
@@ -346,10 +367,10 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
             layout_asiento1.setVisibility(View.VISIBLE);
             nombre_asiento1.setText(editText_nombre.getText());
-            Viaje.pasajeroArrayList.get(1).setNombre(String.valueOf(editText_nombre.getText()));
+            viajeActual.pasajeroArrayList.get(1).setNombre(String.valueOf(editText_nombre.getText()));
             icon_asiento1.setImageResource(pasajero_seleccionado.getIcon_seleccionado());
             numero_asiento1.setText(String.valueOf(numAsiento));
-            Viaje.pasajeroArrayList.get(1).setNumero_asiento(numAsiento);
+            viajeActual.pasajeroArrayList.get(1).setNumero_asiento(numAsiento);
 
             seleccionado_p1 = true;
         }
@@ -357,10 +378,10 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
             layout_asiento2.setVisibility(View.VISIBLE);
             nombre_asiento2.setText(editText_nombre.getText());
-            Viaje.pasajeroArrayList.get(2).setNombre(String.valueOf(editText_nombre.getText()));
+            viajeActual.pasajeroArrayList.get(2).setNombre(String.valueOf(editText_nombre.getText()));
             icon_asiento2.setImageResource(pasajero_seleccionado.getIcon_seleccionado());
             numero_asiento2.setText(String.valueOf(numAsiento));
-            Viaje.pasajeroArrayList.get(2).setNumero_asiento(numAsiento);
+            viajeActual.pasajeroArrayList.get(2).setNumero_asiento(numAsiento);
 
             seleccionado_p2 = true;
         }
@@ -368,10 +389,10 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
             layout_asiento3.setVisibility(View.VISIBLE);
             nombre_asiento3.setText(editText_nombre.getText());
-            Viaje.pasajeroArrayList.get(3).setNombre(String.valueOf(editText_nombre.getText()));
+            viajeActual.pasajeroArrayList.get(3).setNombre(String.valueOf(editText_nombre.getText()));
             icon_asiento3.setImageResource(pasajero_seleccionado.getIcon_seleccionado());
             numero_asiento3.setText(String.valueOf(numAsiento));
-            Viaje.pasajeroArrayList.get(3).setNumero_asiento(numAsiento);
+            viajeActual.pasajeroArrayList.get(3).setNumero_asiento(numAsiento);
 
             seleccionado_p3 = true;
         }
@@ -379,10 +400,10 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
             layout_asiento4.setVisibility(View.VISIBLE);
             nombre_asiento4.setText(editText_nombre.getText());
-            Viaje.pasajeroArrayList.get(4).setNombre(String.valueOf(editText_nombre.getText()));
+            viajeActual.pasajeroArrayList.get(4).setNombre(String.valueOf(editText_nombre.getText()));
             icon_asiento4.setImageResource(pasajero_seleccionado.getIcon_seleccionado());
             numero_asiento4.setText(String.valueOf(numAsiento));
-            Viaje.pasajeroArrayList.get(4).setNumero_asiento(numAsiento);
+            viajeActual.pasajeroArrayList.get(4).setNumero_asiento(numAsiento);
 
             seleccionado_p4 = true;
         }
@@ -399,29 +420,29 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
     private void cambiarColorIconoAzulTipoPasajeroAutomatico() {
 
-        if (Viaje.pasajeroArrayList.get(1).getTipo() != null && !seleccionado_p1) {
+        if (viajeActual.pasajeroArrayList.get(1).getTipo() != null && !seleccionado_p1) {
 
-            iconPasajero1.setImageResource(Viaje.pasajeroArrayList.get(1).getIcon_seleccionado());
-            pasajero_seleccionado = Viaje.pasajeroArrayList.get(1);
+            iconPasajero1.setImageResource(viajeActual.pasajeroArrayList.get(1).getIcon_seleccionado());
+            pasajero_seleccionado = viajeActual.pasajeroArrayList.get(1);
             numeroDeAsientoSeleccionado = 1;
 
         }
-        else if (Viaje.pasajeroArrayList.get(2).getTipo() != null && !seleccionado_p2) {
+        else if (viajeActual.pasajeroArrayList.get(2).getTipo() != null && !seleccionado_p2) {
 
-            iconPasajero2.setImageResource(Viaje.pasajeroArrayList.get(2).getIcon_seleccionado());
-            pasajero_seleccionado = Viaje.pasajeroArrayList.get(2);
+            iconPasajero2.setImageResource(viajeActual.pasajeroArrayList.get(2).getIcon_seleccionado());
+            pasajero_seleccionado = viajeActual.pasajeroArrayList.get(2);
             numeroDeAsientoSeleccionado = 2;
         }
-        else if (Viaje.pasajeroArrayList.get(3).getTipo() != null && !seleccionado_p3) {
+        else if (viajeActual.pasajeroArrayList.get(3).getTipo() != null && !seleccionado_p3) {
 
-            iconPasajero3.setImageResource(Viaje.pasajeroArrayList.get(3).getIcon_seleccionado());
-            pasajero_seleccionado = Viaje.pasajeroArrayList.get(3);
+            iconPasajero3.setImageResource(viajeActual.pasajeroArrayList.get(3).getIcon_seleccionado());
+            pasajero_seleccionado = viajeActual.pasajeroArrayList.get(3);
             numeroDeAsientoSeleccionado = 3;
         }
-        else if (Viaje.pasajeroArrayList.get(4).getTipo() != null && !seleccionado_p4) {
+        else if (viajeActual.pasajeroArrayList.get(4).getTipo() != null && !seleccionado_p4) {
 
-            iconPasajero4.setImageResource(Viaje.pasajeroArrayList.get(4).getIcon_seleccionado());
-            pasajero_seleccionado = Viaje.pasajeroArrayList.get(4);
+            iconPasajero4.setImageResource(viajeActual.pasajeroArrayList.get(4).getIcon_seleccionado());
+            pasajero_seleccionado = viajeActual.pasajeroArrayList.get(4);
             numeroDeAsientoSeleccionado = 4;        }
     }
 
@@ -466,30 +487,30 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
         aparecerBotonContinuar();
 
-        if (Viaje.pasajeroArrayList.get(1).getPasajeroPorNumeroAsiento(numeroAsiento)){
+        if (viajeActual.pasajeroArrayList.get(1).getPasajeroPorNumeroAsiento(numeroAsiento)){
             layout_asiento1.setVisibility(View.GONE);
-            Viaje.pasajeroArrayList.get(1).setNumero_asiento(0);
-            Viaje.pasajeroArrayList.get(1).setNombre("");
+            viajeActual.pasajeroArrayList.get(1).setNumero_asiento(0);
+            viajeActual.pasajeroArrayList.get(1).setNombre("");
             seleccionado_p1 = false;
         }
-        else if (Viaje.pasajeroArrayList.get(2).getPasajeroPorNumeroAsiento(numeroAsiento)){
+        else if (viajeActual.pasajeroArrayList.get(2).getPasajeroPorNumeroAsiento(numeroAsiento)){
             layout_asiento2.setVisibility(View.GONE);
-            Viaje.pasajeroArrayList.get(2).setNumero_asiento(0);
-            Viaje.pasajeroArrayList.get(2).setNombre("");
+            viajeActual.pasajeroArrayList.get(2).setNumero_asiento(0);
+            viajeActual.pasajeroArrayList.get(2).setNombre("");
             seleccionado_p2 = false;
 
         }
-        else if (Viaje.pasajeroArrayList.get(3).getPasajeroPorNumeroAsiento(numeroAsiento)){
+        else if (viajeActual.pasajeroArrayList.get(3).getPasajeroPorNumeroAsiento(numeroAsiento)){
             layout_asiento3.setVisibility(View.GONE);
-            Viaje.pasajeroArrayList.get(3).setNumero_asiento(0);
-            Viaje.pasajeroArrayList.get(3).setNombre("");
+            viajeActual.pasajeroArrayList.get(3).setNumero_asiento(0);
+            viajeActual.pasajeroArrayList.get(3).setNombre("");
             seleccionado_p3 = false;
 
         }
-        else if (Viaje.pasajeroArrayList.get(4).getPasajeroPorNumeroAsiento(numeroAsiento)){
+        else if (viajeActual.pasajeroArrayList.get(4).getPasajeroPorNumeroAsiento(numeroAsiento)){
             layout_asiento4.setVisibility(View.GONE);
-            Viaje.pasajeroArrayList.get(4).setNumero_asiento(0);
-            Viaje.pasajeroArrayList.get(4).setNombre("");
+            viajeActual.pasajeroArrayList.get(4).setNumero_asiento(0);
+            viajeActual.pasajeroArrayList.get(4).setNombre("");
             seleccionado_p4 = false;
         }
     }
@@ -515,7 +536,7 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) scrollView.getLayoutParams();
         params.bottomMargin = 120;
 
-        if (asientosElejidos == Viaje.getTotalPasajeros()) {
+        if (asientosElejidos == viajeActual.getTotalPasajeros()) {
 
             Animation animation = new TranslateAnimation(0, 0, 130, 0);
             animation.setDuration(700);
@@ -530,8 +551,13 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
 
     public void cambiarActivityResumen(View view) {
 
-        Intent intent = new Intent(this, ActivityResumen.class);
-        startActivity(intent);
+        if (redondo && viajeIda) {
+            Intent intent = new Intent(this, ActivityCamion.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, ActivityResumen.class);
+            startActivity(intent);
+        }
     }
 
     public void goHome() {
@@ -540,15 +566,13 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
         startActivity(intent);
     }
 
-
-
     private void mostrarTeclado(EditText editText) {
         try {
             ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
                     .toggleSoftInput(InputMethodManager.SHOW_FORCED,
                             InputMethodManager.HIDE_IMPLICIT_ONLY);
             if (editText != null) editText.requestFocus();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -562,6 +586,33 @@ public class ActivityCamion extends AppCompatActivity implements MyInterfaceActi
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        ListaViajes.viajeIda.pasajeroArrayList.get(1).setNumero_asiento(0);
+
+        if (viajeIda){
+            Intent intent = new Intent(this, ActivityHorarios.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+        }else{
+            Intent intent = new Intent(this, ActivityCamion.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
+    //Devuelve el viaje correspondiente a la situacion
+    private Viaje viajeActual() {
+
+        if (!redondo || viajeIda) {
+            return ListaViajes.viajeIda;
+        } else {
+            return ListaViajes.viajeRegreso;
         }
     }
 }

@@ -18,15 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            >
+            android:gravity="center_vertical">
 
             <TextView
                 style="@style/cabeceraOrigenDestino"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
-                android:text="Tiempo restante para finalziar compra "
+                android:text="Tiempo restante para finalizar compra "
                 android:textStyle="bold" />
 
             <TextView
@@ -41,7 +40,6 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 
     <LinearLayout
         style="@style/layoutMain"
@@ -64,14 +62,12 @@
             android:inputType="textPersonName"
             android:hint="nombre" />
 
-
         <EditText
             android:id="@+id/et_correo_oxxo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="correo" />
-
 
         <EditText
             android:id="@+id/et_telefono_oxxo"
@@ -80,18 +76,15 @@
             android:inputType="number"
             android:hint="Numero de telefono" />
 
-
     </LinearLayout>
 
-
     <Button
-        android:onClick="gerenrarReferenccia"
+        android:onClick="validarCampos"
         style="@style/botonActivo"
-        android:layout_width="150dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:text="Generar Referencia"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
         android:layout_margin="20dp"/>
 
 </LinearLayout>

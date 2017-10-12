@@ -19,7 +19,6 @@ public class Salidas {
         this.acientosDisponibles = acientosdisponibles;
         this.asientosOcupados = asientosOcupados;
         this.corrida = corrida;
-
         this.precio = precio;
 
     }
@@ -50,7 +49,15 @@ public class Salidas {
         return asientosOcupados;
     }
 
+    public void setAsientosOcupados(ArrayList<String> asientosOcupados) {
+        this.asientosOcupados = asientosOcupados;
+    }
+
     public String getCorrida() {
         return corrida;
+    }
+
+    public void setCorrida(String corrida) {
+        this.corrida = corrida;
     }
 }
